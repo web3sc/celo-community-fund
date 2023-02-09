@@ -1,10 +1,91 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300&family=Sacramento&display=swap');
+
 .App {
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+}
+
+.modal {
+  height: 75vh;
+  width: 75vw;
+  font-family: 'Inter', sans-serif;
+}
+
+.modal ul li {
+  padding: 2%;
+}
+
+.modal-title {
+  font-size: 2rem;
+  font-weight: bold;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+
+.celo-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 10rem;
+}
+
+.info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 1rem;
+  color: white;
+  background-color: #282c34;
+  border: none;
+
+  padding : 1rem;
+}
+
+.info:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.legend {
+    position: fixed;
+    font-size: 1rem;
+    bottom: 0;
+    right: 0; 
+    padding: 3rem;
+}
+
+.w3text{
+  font-family: 'Sacramento', cursive;
+  font-size: 2rem;
+}
+
+.footer-container{
+  background-color: transparent;
+  color: white;
+  text-align: center;
+  position: fixed;
+  bottom: 1px;
+  left: 50%;
+  transform: translate(-50%, 0);
+}
+
+.footer{
+  text-decoration: none;
+  color: white;
+  font-size: 0.8rem;
+}
+
+.donate {
+  font-size: 0.5rem;
+}
+
+.TPT {
+  text-decoration: none;
+  color: #FCFF52;
+}
+
+.TPT:hover {
+  cursor: hover;
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -24,15 +105,37 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+@media (max-width: 500px) {
+
+  .modal {
+    font-size: 0.8rem;
+  }
+
+  .celo-logo {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 5rem;
+  }
+
+  .legend {
+    position: fixed;
+    font-size: 0.7rem;
+    bottom: 0;
+    right: 0; 
+    padding-bottom: 4rem;
+    padding-right: 1rem;
+}
+.footer{
+          font-size: 0.5rem;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.donate {
+  font-size: 0.4rem;
+}
+
+.w3text {
+  font-size: 1.5rem;
+}
+
 }
