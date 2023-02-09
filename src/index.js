@@ -3,11 +3,22 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { CeloProvider } from "@celo/react-celo";
+import "@celo/react-celo/lib/styles.css";
+import 'babel-polyfill';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+      <CeloProvider
+          dapp={{
+            name: "My awesome dApp",
+            description: "My awesome description",
+            url: "https://example.com",
+      }}
+    >
+     <App />
+    </CeloProvider>
   </React.StrictMode>
 );
 

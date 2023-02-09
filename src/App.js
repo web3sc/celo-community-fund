@@ -1,14 +1,31 @@
 import React from 'react';
-import { useMemo, useRef } from 'react'
+import { useMemo, useRef, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
 import ReactTableUI from 'react-table-ui'
 import Modal from 'react-modal';
+import { useCelo } from '@celo/react-celo';
+import Web3 from 'web3';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-const data = [  { title: "Community Fund", value: 50, color: "#FCFF52",label:'50' },  { title: "Draft Proposals", value: 25, color: "#9B9B9B" },  { title: "Ocelot", value: 15, color: "#56DF7C" },   { title: "Prezenti", value: 5, color: "#56DF7C" },   { title: "Climate Collective", value: 5, color: "#56DF7C" }];
+import {CELO_TOKEN,
+  GOVERNANCE_ADDRESS,
+  CC_ADDRESS,
+  OCELOT_ADDRESS,
+  PREZENTI_ADDRESS,
+  AFRICA_DAO,
+  INDIA_DAO_CHITTY,
+  INDIA_DAO_MONISH,
+  LATAM_DAO,
+  REPL_RATE,
+  available_funds_color,
+  allocated_funds_color,
+  pending_funds_color,
+  getFundData,
+  getTableData } from './utils/data';
 
+const BigNumber = require('bignumber.js');
 const customStyles = {
   content: {
     top: '50%',
@@ -21,10 +38,109 @@ const customStyles = {
 };
 
 function App() {
+  const { kit } = useCelo();
   let subtitle;
+  const [table, setTable] = React.useState([])
+  const [data, setData] = React.useState([])
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
   const tableInstanceRef = useRef(null)
+
+  useEffect(() => {
+
+    let fundData = getFundData();
+    
+
+    async function populateData(){
+      let celo = await kit.contracts.getGoldToken()
+      
+      //Community Fund
+      let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
+      let community_fund_result = getCeloValue(community_fund.c[0])
+      
+      //Prezenti
+      let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
+      let prezenti_result = getCeloValue(Prezenti.c[0])
+
+      //Ocelot
+      let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
+      let ocelot_result = getCeloValue(Ocelot.c[0])
+      
+      //Climate Collective
+      let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
+      let cc_result = getCeloValue(CC.c[0])
+
+      let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
+
+      let community_fund_remainding = (community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
+      let community_fund_remaining_percentage = (community_fund_remainding / community_fund_result) * 100
+      let community_fund_allocated_percentage = (100 - community_fund_remaining_percentage)
+      let prezenti_remaining_percentage = (prezenti_result / community_fund_result) * 100
+      let ocelot_remaining_percentage = (ocelot_result / community_fund_result) * 100
+      let cc_remaining_percentage = (cc_result / community_fund_result) * 100
+      let drafts_remaining_percentage = (drafts / community_fund_result) * 100
+
+      console.log('community_fund_remainding', community_fund_remainding)
+      console.log('community_fund_remaining_percentage', community_fund_remaining_percentage)
+      console.log('community_fund_allocated_percentage', community_fund_allocated_percentage)
+      console.log('prezenti_remaining_percentage', prezenti_remaining_percentage)
+      console.log('ocelot_remaining_percentage', ocelot_remaining_percentage)
+      console.log('cc_remaining_percentage', cc_remaining_percentage)
+      console.log('drafts_remaining_percentage', drafts_remaining_percentage)
+      
+
+      fundData.forEach((fund) => {
+        if(fund.title === 'Community Fund'){
+          fund.approved = community_fund_result 
+          fund.amount = community_fund_remainding
+          fund.value = community_fund_allocated_percentage
+        } else if(fund.title === 'Prezenti'){
+          fund.amount = prezenti_result
+          fund.value = prezenti_remaining_percentage
+        } else if(fund.title === 'Ocelot'){
+          fund.amount = ocelot_result
+          fund.value = ocelot_remaining_percentage
+        } else if(fund.title === 'Climate Collective'){
+          fund.amount = cc_result
+          fund.value = cc_remaining_percentage
+        } else if(fund.title === 'Drafts'){
+          fund.value = drafts_remaining_percentage
+        }
+      })
+
+    }
+
+    setData(fundData);
+
+    //TODO: Get better table package
+    async function getTableData(){
+
+
+      // let tableData = [
+      //   { name: 'Community Fund', approved: community_fund_result, available: community_fund_result - (prezenti_result + ocelot_result + cc_result) },
+      //   { name: 'Ocelot', approved: 3000000, available: ocelot_result },
+      //   { name: 'Climate Collective', approved: 4000000, available: cc_result },
+      //   { name: 'Prezenti', approved: 800000, available: prezenti_result },
+      // ]
+
+      // console.log('tableData', tableData)
+  
+      // setTable(tableData);
+  
+    }
+
+
+
+    getTableData()
+
+  }, []);
+
+
+
+
+  // const tableData = useMemo(
+  //   () => table,
+  //   [table]
+  // )
 
   const tableData = useMemo(
     () => [
@@ -35,14 +151,12 @@ function App() {
     []
   )
 
+  function getCeloValue(amount){
+    return amount / 10**4
+  }
 
   function openModal() {
     setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
   }
 
   function closeModal() {
@@ -53,7 +167,6 @@ function App() {
     <div className="App">
       <Modal
         isOpen={modalIsOpen}
-        onAfterOpen={afterOpenModal}
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
@@ -110,15 +223,15 @@ function App() {
         <table>
           <tbody>
             <tr>
-              <td style={{ backgroundColor: "#56DF7C" }} />
+              <td style={{ backgroundColor: available_funds_color }} />
               <td>Celo Available</td>
             </tr>
             <tr>
-              <td style={{ backgroundColor: "#9B9B9B" }} />
+              <td style={{ backgroundColor: pending_funds_color }} />
               <td>Draft Proposals</td>
             </tr>
             <tr>
-              <td style={{ backgroundColor: "#FCFF52" }} />
+              <td style={{ backgroundColor: available_funds_color }} />
               <td>Fund Celo Available</td>
             </tr>
 
