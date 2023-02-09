@@ -3,10 +3,9 @@ import { useMemo, useRef, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
-import ReactTableUI from 'react-table-ui'
+import Table from './components/Table';
 import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
-import Web3 from 'web3';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import {CELO_TOKEN,
@@ -14,18 +13,15 @@ import {CELO_TOKEN,
   CC_ADDRESS,
   OCELOT_ADDRESS,
   PREZENTI_ADDRESS,
-  AFRICA_DAO,
-  INDIA_DAO_CHITTY,
-  INDIA_DAO_MONISH,
-  LATAM_DAO,
   REPL_RATE,
   available_funds_color,
   allocated_funds_color,
   pending_funds_color,
   getFundData,
-  getTableData } from './utils/data';
+  getDraftsData } from './utils/data';
 
-const BigNumber = require('bignumber.js');
+
+
 const customStyles = {
   content: {
     top: '50%',
@@ -37,18 +33,45 @@ const customStyles = {
   },
 };
 
+
+
+
+
+
 function App() {
   const { kit } = useCelo();
   let subtitle;
   const [table, setTable] = React.useState([])
   const [data, setData] = React.useState([])
   const [modalIsOpen, setIsOpen] = React.useState(false);
-  const tableInstanceRef = useRef(null)
+
+  const columns = React.useMemo(
+    () => [
+      {
+        Header: 'Name',
+        accessor: 'name', // accessor is the "key" in the data
+      },
+      {
+        Header: 'Approved',
+        accessor: 'approved',
+      },
+      {
+        Header: 'Available',
+        accessor: 'available',
+      },
+      {
+        Header: 'Proposal',
+        accessor: 'proposal',
+        Cell: props => <a href={props.value}>Link</a>
+      },
+    ],
+    []
+  )
 
   useEffect(() => {
 
     let fundData = getFundData();
-    
+    let draftsData = getDraftsData();
 
     async function populateData(){
       let celo = await kit.contracts.getGoldToken()
@@ -71,13 +94,13 @@ function App() {
 
       let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
 
-      let community_fund_remainding = (community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
-      let community_fund_remaining_percentage = (community_fund_remainding / community_fund_result) * 100
-      let community_fund_allocated_percentage = (100 - community_fund_remaining_percentage)
-      let prezenti_remaining_percentage = (prezenti_result / community_fund_result) * 100
-      let ocelot_remaining_percentage = (ocelot_result / community_fund_result) * 100
-      let cc_remaining_percentage = (cc_result / community_fund_result) * 100
-      let drafts_remaining_percentage = (drafts / community_fund_result) * 100
+      let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
+      let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
+      let community_fund_allocated_percentage = Math.round(100 - community_fund_remaining_percentage)
+      let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
+      let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
+      let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
+      let drafts_remaining_percentage = Math.round((drafts / community_fund_result) * 100)
 
       console.log('community_fund_remainding', community_fund_remainding)
       console.log('community_fund_remaining_percentage', community_fund_remaining_percentage)
@@ -109,50 +132,43 @@ function App() {
 
     }
 
+
+    populateData()
     setData(fundData);
 
     //TODO: Get better table package
-    async function getTableData(){
+    async function populateTableData(){
 
+      let tableData = []
+      
+      fundData.forEach((fund) => {
 
-      // let tableData = [
-      //   { name: 'Community Fund', approved: community_fund_result, available: community_fund_result - (prezenti_result + ocelot_result + cc_result) },
-      //   { name: 'Ocelot', approved: 3000000, available: ocelot_result },
-      //   { name: 'Climate Collective', approved: 4000000, available: cc_result },
-      //   { name: 'Prezenti', approved: 800000, available: prezenti_result },
-      // ]
+        if(fund.title !== 'Drafts'){
+        tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
+        }
+      })
 
-      // console.log('tableData', tableData)
+      draftsData.forEach((draft) => {
+        tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
+      })
+
+      console.log('tableData', tableData)
   
-      // setTable(tableData);
+      setTable(tableData);
   
     }
 
 
 
-    getTableData()
-
-  }, []);
+    populateTableData()
 
 
+  }, [ table, data]);
 
 
-  // const tableData = useMemo(
-  //   () => table,
-  //   [table]
-  // )
-
-  const tableData = useMemo(
-    () => [
-      { name: 'Ocelot', approved: 3000000, available: 0 },
-      { name: 'Climate Collective', approved: 4000000, available: 0 },
-      { name: 'Prezenti', approved: 800000, available: 0 },
-    ],
-    []
-  )
 
   function getCeloValue(amount){
-    return amount / 10**4
+    return Math.round(amount / 10**4)
   }
 
   function openModal() {
@@ -184,12 +200,8 @@ function App() {
               <li>The Community Fund also receives the 'base' portion of transaction fees.</li>
             </ul>
           </div>
-          <ReactTableUI
-            title='Fund Allocation'
-            data={tableData}
-            tableInstanceRef={tableInstanceRef}
-            maxHeight={10}
-          />
+
+        <Table columns={columns} data={table}/>
           
         </div>
 
@@ -223,7 +235,7 @@ function App() {
         <table>
           <tbody>
             <tr>
-              <td style={{ backgroundColor: available_funds_color }} />
+              <td style={{ backgroundColor: allocated_funds_color }} />
               <td>Celo Available</td>
             </tr>
             <tr>

@@ -1,8 +1,3 @@
-const Web3 = require("web3");
-const ContractKit = require("@celo/contractkit");
-
-const web3 = new Web3("https://forno.celo.org");
-const kit = ContractKit.newKitFromWeb3(web3);
 
 //Addresses
 const CELO_TOKEN = "0x471EcE3750Da237f93B8E339c536989b8978a438";
@@ -23,6 +18,7 @@ const OCELOT_APPROVAL = 3000000;
 const CC_APPROVAL = 4000000;
 
 //proposals
+const community_fund_explorer = "https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972/coin-balances#address-tabs"
 const ocelot_proposal = "https://celo.stake.id/#/proposal/43"
 const prezenti_proposal = "https://celo.stake.id/#/proposal/61"
 const cc_proposal = "https://celo.stake.id/#/proposal/60"
@@ -34,10 +30,10 @@ var allocated_funds_color = "#56DF7C";
 var pending_funds_color = "#9B9B9B";
 
 //FUND and ALLOCATIONS
-var community_fund= { title: "Community Fund", value: 2, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: ''}
-var prezenti = { title: "Prezenti", value: 1, amount:0, color: allocated_funds_color,label:'', approved:PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal   }
-var ocelot = { title: "Ocelot", value: 1, amount:0, color: allocated_funds_color,label:'', approved:OCELOT_APPROVAL, address: OCELOT_ADDRESS, proposal: ocelot_proposal }
-var cc = { title: "Climate Collective", value: 0.5, amount:0, color: allocated_funds_color, label:'', approved:CC_APPROVAL, address: CC_ADDRESS, proposal: cc_proposal }
+var community_fund= { title: "Community Fund", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
+var prezenti = { title: "Prezenti", value: 0, amount:0, color: allocated_funds_color,label:'', approved:PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal   }
+var ocelot = { title: "Ocelot", value: 0, amount:0, color: allocated_funds_color,label:'', approved:OCELOT_APPROVAL, address: OCELOT_ADDRESS, proposal: ocelot_proposal }
+var cc = { title: "Climate Collective", value: 0, amount:0, color: allocated_funds_color, label:'', approved:CC_APPROVAL, address: CC_ADDRESS, proposal: cc_proposal }
 
 
 //Drafts
@@ -61,18 +57,8 @@ export const getFundData = () => {
     return fund;
 }
 
-export function getTableData() {
-    let tableData = [];
-    fund.forEach( e => {
-        var i = {
-            title: e.title,
-            approved: e.value,
-            available: 0,
-            address: e.address,
-        };
-        tableData.push(i);
-    });
-    return tableData;
+export const getDraftsData = () => {
+    return [india_dao_chitty, india_dao_monish, africa_dao, latam_dao];
 }
 
 

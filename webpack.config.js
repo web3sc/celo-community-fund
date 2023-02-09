@@ -1,6 +1,11 @@
 module.exports = {
-    //...
+    entry: './src/index.js',
+    output: {
+      path: path.resolve(__dirname, 'dist'),
+      filename: 'bundle.js'
+    },
     resolve: {
+      extensions: ['.js', '.jsx'],
       fallback: {
         "crypto": require.resolve("crypto-browserify") ,
         "http": require.resolve("stream-http"),
@@ -13,12 +18,21 @@ module.exports = {
       module: {
         loaders: [
           {
-            test: /\.jsx?$/,
-            loader: 'babel',
+            test: /\.js?$/,
+            loader: 'babel-loader',
             exclude: /node_modules/,
             query: {
               cacheDirectory: true,
               presets: ['react', 'es2015']
+            }
+          }
+        ],
+        rules: [
+          {
+            test: /\.(js|jsx)$/,
+            exclude: /node_modules/,
+            use: {
+              loader: "babel-loader"
             }
           }
         ]
