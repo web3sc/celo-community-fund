@@ -115,6 +115,10 @@ tr{
   cursor: hover;
 }
 
+.pie-chart {
+  width: 65vw;
+}
+
 
 
 @media (prefers-reduced-motion: no-preference) {
@@ -171,4 +175,10 @@ tr{
   font-size: 1.5rem;
 }
 
+}
+
+@media screen and (min-width: 980px) {
+  .pie-chart {
+    width: 35vw;
+  }
 }

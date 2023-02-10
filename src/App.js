@@ -1,5 +1,5 @@
 import React from 'react';
-import { useMemo, useRef,useCallback, useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
 import './App.css';
@@ -9,8 +9,7 @@ import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
-import ReactTooltip from 'react-tooltip';
-import {CELO_TOKEN,
+import {
   GOVERNANCE_ADDRESS,
   CC_ADDRESS,
   OCELOT_ADDRESS,
@@ -49,6 +48,7 @@ function App() {
   
   let fundData = getFundData();
   let draftsData = getDraftsData();
+ 
   
   const columns = React.useMemo(
     () => [
@@ -74,27 +74,14 @@ function App() {
   )
 
    //TODO: Get better table package
-   const populateTableData = useCallback(() =>{
-    let tableData = []
-    
-    fundData.forEach((fund) => {
-
-      if(fund.title !== 'Drafts'){
-      tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
-      }
-    })
-    
-    draftsData.forEach((draft) => {
-      tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
-    })
-
-    setTable(tableData);
+   const populateTableData = useCallback(async () =>{
 
   },[fundData, draftsData])
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
     let populatedData = [];
+    let tableData = [] 
     
     //Community Fund
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
@@ -117,7 +104,6 @@ function App() {
 
     let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
     let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
-    let community_fund_allocated_percentage = Math.round(100 - community_fund_remaining_percentage)
     let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
     let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
     let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
@@ -142,13 +128,27 @@ function App() {
         fund.value = drafts_remaining_percentage
       }
 
-      if( fund.amount != 0){
+      if(fund.title !== 'Drafts'){
+        tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
+        }
+
+      if( fund.amount !== 0){
         populatedData.push(fund)
       }
     })
-    setData(populatedData)
 
-  } , [fundData]);
+    draftsData.forEach((draft) => {
+      tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
+    })
+
+    
+
+  
+    
+    setData(populatedData)
+    setTable(tableData)
+    
+  } , [fundData, draftsData]);
 
 
 
@@ -215,10 +215,10 @@ function App() {
       </div>
       <div className="App-header">
       <p className='title'>Community Fund Status</p> 
-      <h4 className='dollars' >{communityFund +  ' '}<span><img className='symbol' src={symbol}></img></span></h4>
+      <h4 className='dollars' >{communityFund +  ' '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4>
+      <div className='pie-chart'>
       <PieChart
         data={data}
-        style={{  width: "75vw" }}
         segmentsShift={1}
         label={({ x, y, dx, dy, dataEntry }) => (
           <text
@@ -245,6 +245,7 @@ function App() {
         center={[55, 55]}
       />
       </div>
+      </div>
       <div className='legend'>
         {/* Add your legend here */}
         <table>
@@ -267,7 +268,7 @@ function App() {
       </div>
       <div  className='footer-container' >
         {/* Add your footer link here */}
-        <a className='footer' href="https://www.web3socialcapital.xyz" >Made with ❤️ by <span className='w3text'>w3sc</span> </a>
+        <a className='footer' href="https://www.web3socialcapital.xyz" >Made with <span role="img">❤️</span> by <span className='w3text'>w3sc</span> </a>
         <p className='donate'>If you find this valuable please support us by voting for the validator group - <a className='TPT' href='https://www.thecelo.com/groupDetail/thepassivetrust'>The Passive Trust</a></p>
       </div>
 
