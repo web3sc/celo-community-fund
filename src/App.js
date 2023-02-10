@@ -112,17 +112,17 @@ function App() {
 
     fundData.forEach((fund) => {
       if(fund.title === 'Community Fund'){
-        fund.approved = community_fund_result 
-        fund.amount = community_fund_remainding
+        fund.approved = community_fund_result.toLocaleString() 
+        fund.amount = community_fund_remainding.toLocaleString()
         fund.value = community_fund_remaining_percentage
       } else if(fund.title === 'Prezenti'){
         fund.amount = prezenti_result
         fund.value = prezenti_remaining_percentage
       } else if(fund.title === 'Ocelot'){
-        fund.amount = ocelot_result
+        fund.amount = ocelot_result.toLocaleString()
         fund.value = ocelot_remaining_percentage
       } else if(fund.title === 'Climate Collective'){
-        fund.amount = cc_result
+        fund.amount = cc_result.toLocaleString()
         fund.value = cc_remaining_percentage
       } else if(fund.title === 'Drafts'){
         fund.value = drafts_remaining_percentage
@@ -197,7 +197,7 @@ function App() {
 
           <div>
             <hr/>
-            <h3>Est Replenish Rate: ~{REPL_RATE} CELO per day</h3>
+            <h3>Est Replenish Rate: ~{REPL_RATE.toLocaleString()} CELO daily</h3>
             <hr/>
           </div>
         <div className="modal-table">
@@ -215,7 +215,7 @@ function App() {
       </div>
       <div className="App-header">
       <p className='title'>Community Fund Status</p> 
-      <h4 className='dollars' >{communityFund +  ' '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4>
+      <h4 className='dollars' >{communityFund.toLocaleString() +  ' '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4>
       <div className='pie-chart'>
       <PieChart
         data={data}
