@@ -1,6 +1,7 @@
 import React from 'react';
-import { useMemo, useRef, useEffect } from 'react'
+import { useMemo, useRef,useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
+import symbol from './images/celo_symbol.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
 import Table from './components/Table';
@@ -8,6 +9,7 @@ import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import ReactTooltip from 'react-tooltip';
 import {CELO_TOKEN,
   GOVERNANCE_ADDRESS,
   CC_ADDRESS,
@@ -40,11 +42,14 @@ const customStyles = {
 
 function App() {
   const { kit } = useCelo();
-  let subtitle;
   const [table, setTable] = React.useState([])
   const [data, setData] = React.useState([])
+  const [communityFund, setCommunityFund] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
-
+  
+  let fundData = getFundData();
+  let draftsData = getDraftsData();
+  
   const columns = React.useMemo(
     () => [
       {
@@ -68,102 +73,90 @@ function App() {
     []
   )
 
+   //TODO: Get better table package
+   const populateTableData = useCallback(() =>{
+    let tableData = []
+    
+    fundData.forEach((fund) => {
+
+      if(fund.title !== 'Drafts'){
+      tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
+      }
+    })
+    
+    draftsData.forEach((draft) => {
+      tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
+    })
+
+    setTable(tableData);
+
+  },[fundData, draftsData])
+
+  const populateData = useCallback(async () => {
+    let celo = await kit.contracts.getGoldToken()
+    let populatedData = [];
+    
+    //Community Fund
+    let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
+    let community_fund_result = getCeloValue(community_fund.c[0])
+    setCommunityFund(community_fund_result)
+    
+    //Prezenti
+    let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
+    let prezenti_result = getCeloValue(Prezenti.c[0])
+
+    //Ocelot
+    let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
+    let ocelot_result = getCeloValue(Ocelot.c[0])
+    
+    //Climate Collective
+    let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
+    let cc_result = getCeloValue(CC.c[0])
+
+    let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
+
+    let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
+    let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
+    let community_fund_allocated_percentage = Math.round(100 - community_fund_remaining_percentage)
+    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
+    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
+    let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
+    let drafts_remaining_percentage = Math.round((drafts / community_fund_result) * 100)
+    
+
+    fundData.forEach((fund) => {
+      if(fund.title === 'Community Fund'){
+        fund.approved = community_fund_result 
+        fund.amount = community_fund_remainding
+        fund.value = community_fund_remaining_percentage
+      } else if(fund.title === 'Prezenti'){
+        fund.amount = prezenti_result
+        fund.value = prezenti_remaining_percentage
+      } else if(fund.title === 'Ocelot'){
+        fund.amount = ocelot_result
+        fund.value = ocelot_remaining_percentage
+      } else if(fund.title === 'Climate Collective'){
+        fund.amount = cc_result
+        fund.value = cc_remaining_percentage
+      } else if(fund.title === 'Drafts'){
+        fund.value = drafts_remaining_percentage
+      }
+
+      if( fund.amount != 0){
+        populatedData.push(fund)
+      }
+    })
+    setData(populatedData)
+
+  } , [fundData]);
+
+
+
   useEffect(() => {
-
-    let fundData = getFundData();
-    let draftsData = getDraftsData();
-
-    async function populateData(){
-      let celo = await kit.contracts.getGoldToken()
-      
-      //Community Fund
-      let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
-      let community_fund_result = getCeloValue(community_fund.c[0])
-      
-      //Prezenti
-      let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
-      let prezenti_result = getCeloValue(Prezenti.c[0])
-
-      //Ocelot
-      let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
-      let ocelot_result = getCeloValue(Ocelot.c[0])
-      
-      //Climate Collective
-      let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
-      let cc_result = getCeloValue(CC.c[0])
-
-      let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
-
-      let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
-      let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
-      let community_fund_allocated_percentage = Math.round(100 - community_fund_remaining_percentage)
-      let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
-      let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
-      let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
-      let drafts_remaining_percentage = Math.round((drafts / community_fund_result) * 100)
-
-      console.log('community_fund_remainding', community_fund_remainding)
-      console.log('community_fund_remaining_percentage', community_fund_remaining_percentage)
-      console.log('community_fund_allocated_percentage', community_fund_allocated_percentage)
-      console.log('prezenti_remaining_percentage', prezenti_remaining_percentage)
-      console.log('ocelot_remaining_percentage', ocelot_remaining_percentage)
-      console.log('cc_remaining_percentage', cc_remaining_percentage)
-      console.log('drafts_remaining_percentage', drafts_remaining_percentage)
-      
-
-      fundData.forEach((fund) => {
-        if(fund.title === 'Community Fund'){
-          fund.approved = community_fund_result 
-          fund.amount = community_fund_remainding
-          fund.value = community_fund_allocated_percentage
-        } else if(fund.title === 'Prezenti'){
-          fund.amount = prezenti_result
-          fund.value = prezenti_remaining_percentage
-        } else if(fund.title === 'Ocelot'){
-          fund.amount = ocelot_result
-          fund.value = ocelot_remaining_percentage
-        } else if(fund.title === 'Climate Collective'){
-          fund.amount = cc_result
-          fund.value = cc_remaining_percentage
-        } else if(fund.title === 'Drafts'){
-          fund.value = drafts_remaining_percentage
-        }
-      })
-
-    }
-
-
     populateData()
-    setData(fundData);
-
-    //TODO: Get better table package
-    async function populateTableData(){
-
-      let tableData = []
-      
-      fundData.forEach((fund) => {
-
-        if(fund.title !== 'Drafts'){
-        tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
-        }
-      })
-
-      draftsData.forEach((draft) => {
-        tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
-      })
-
-      console.log('tableData', tableData)
-  
-      setTable(tableData);
-  
-    }
-
-
-
     populateTableData()
 
-
-  }, [ table, data]);
+  }, [ populateData, populateTableData]);
 
 
 
@@ -178,6 +171,7 @@ function App() {
   function closeModal() {
     setIsOpen(false);
   }
+  
 
   return (
     <div className="App">
@@ -201,8 +195,14 @@ function App() {
             </ul>
           </div>
 
+          <div>
+            <hr/>
+            <h3>Est Replenish Rate: ~{REPL_RATE} CELO per day</h3>
+            <hr/>
+          </div>
+        <div className="modal-table">
         <Table columns={columns} data={table}/>
-          
+        </div>  
         </div>
 
       </Modal>
@@ -215,11 +215,26 @@ function App() {
       </div>
       <div className="App-header">
       <p className='title'>Community Fund Status</p> 
+      <h4 className='dollars' >{communityFund +  ' '}<span><img className='symbol' src={symbol}></img></span></h4>
       <PieChart
         data={data}
-        style={{ height: "60vh", width: "60vw" }}
+        style={{  width: "75vw" }}
         segmentsShift={1}
-        label={({ dataEntry }) => dataEntry.title}
+        label={({ x, y, dx, dy, dataEntry }) => (
+          <text
+              x={x}
+              y={y}
+              dx={dx}
+              dy={dy}
+              dominant-baseline="central"
+              text-anchor="middle"
+              style={{
+                  fill: '#000', pointerEvents: 'none', fontSize: '2px'
+              }}>
+              <tspan x={x} y={y} dx={dx} dy={dy}>{dataEntry.title + ' ' + dataEntry.value + '%'}</tspan>
+
+          </text>
+      )}
         labelStyle={(index) => ({
           fontSize: '2px',
         })}

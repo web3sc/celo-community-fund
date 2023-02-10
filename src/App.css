@@ -9,10 +9,17 @@
   height: 75vh;
   width: 75vw;
   font-family: 'Inter', sans-serif;
+  text-align: justify;
+
+}
+
+.modal ul {
+  padding: 0;
+  padding-left: 7%;
 }
 
 .modal ul li {
-  padding: 2%;
+  padding-top: 4%;
 }
 
 .modal-title {
@@ -21,12 +28,28 @@
   text-align: center;
 }
 
+.modal-table {
+  padding-bottom: 10%;
+}
+
+th {
+  border-bottom: #282c34 3px solid;
+}
+
+tr{
+  border-bottom: #282c34 3px solid;
+}
+
 
 .celo-logo {
     position: absolute;
     top: 10px;
     left: 10px;
     width: 10rem;
+}
+
+.symbol {
+  width: 01.5rem;
 }
 
 .info {
@@ -84,6 +107,10 @@
   color: #FCFF52;
 }
 
+.dollars {
+  color: #FCFF52;
+}
+
 .TPT:hover {
   cursor: hover;
 }
@@ -118,6 +145,10 @@
     top: 10px;
     left: 10px;
     width: 5rem;
+  }
+
+  .symbol {
+    width: 0.8rem;
   }
 
   .legend {
