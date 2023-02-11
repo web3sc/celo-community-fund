@@ -15,6 +15,17 @@ The Community Fund receives assets from three sources:
         - The Community Fund is the default destination for slashed assets.
         - The Community Fund also receives the 'base' portion of transaction fees.
 
+
+## History
+
+
+|  №  |      Name       | Date | Amount | Webpage | Status |
+|:---:|:---------------:|:------:|:-----:|:------:|:------:|
+| 1 | CCF1 | 2020-12-01 | 665,387 | [site](https://celocommunityfund.org/) | Complete |
+| 2 | Ocelot | 2021-12 | 3,000,000 | [site](http://ocelot.xyz/) | Ongoing |
+| 3 | Climate Collective | 2022-06-11 | 4,000,000 | [site](https://climatecollective.org/) | Ongoing |
+| 4 | Prezenti | 2022-06-11 | 800,000 | [site](https://prezenti.xyz) | Ongoing |
+
 ## Webpage
 
 > Note: the fund also holds a balance of cEUR that is not being tracked at present.
