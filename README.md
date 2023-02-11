@@ -1,70 +1,66 @@
-# Getting Started with Create React App
+# Celo Community Fund Status
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Overview 
 
-## Available Scripts
+This repository to is to keep a canonical history of the Celo Community Fund status and intiatives that have utilized the fund. Previously, the data was segregated and hard to know the current initiatives that were in draft proposal phase, intiatives that had spend approval and the remaining funds avialable to them. It was also difficult to have a high level overview of the total funds.
 
-In the project directory, you can run:
+## What is the fund?
 
-### `npm start`
+The Community Fund provides for general upkeep of the Celo platform. CELO holders decide how to allocate these funds through governance proposals. Funds might be used to pay bounties for bugs or vulnerabilities, security audits, or grants for protocol development.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+The Community Fund receives assets from three sources:
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+        - The Community Fund obtains a desired epoch reward defined as a fraction of the total desired epoch rewards (governable, initially planned to be 25%). This amount is subject to adjustment up or down in the event of under- or over-spending against the epoch rewards target schedule. The Community Fund epoch rewards may be redirected to bolster the Reserve.
 
-### `npm test`
+        - The Community Fund is the default destination for slashed assets.
+        - The Community Fund also receives the 'base' portion of transaction fees.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Webpage
 
-### `npm run build`
+> Note: the fund also holds a balance of cEUR that is not being tracked at present.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+[celocommunityfund.xyz](https://www.celocommunityfund.xyz) shows the current balance of the funds available in the [celo governance address](https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972/coin-balances#address-tabs)(Celo Community Fund) and displays a pie chart with a high level breakdown of its contents and their percentage relevant to the total amount. This consists of 3 elements:
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+1. The currently available funds that are not allocated
+2. The currently available funds that are allocated via spend approvals to their respective addresses
+3.  An aggregate of the draft proposals anticipating to go to governance(this is taking away from no 1 above)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### Info
 
-### `npm run eject`
+Clicking the info button at the top right gives a more detailed overview of each of the items. Including:
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- What is the Celo Community Fund
+- The estimated replish rate per day of the fund
+- Each of the initiatives including total amount approved, available amount left and a link to the respective governance proposal.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## App
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+In the `src/utils` folder it contains a node app that prints the current details.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+`node src/utils/execute.js` 
 
-## Learn More
+returns
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
+-------Community Fund-------
+Community Fund: 10004964
+Prezenti: 0
+Ocelot: 1239250
+CC: 2518998
+--------------------
+-------Drafts-------
+India DAO Chitty: 270000
+India DAO Monish: 80000
+Africa DAO: 0
+Latam DAO: 0
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## Contributing
 
-### Code Splitting
+This is a community run project, all contributions are welcome. If you have feedback or a request please submit an issue. If you want to add additional information or correct information please submit a PR
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## Pay it Forward
 
-### Analyzing the Bundle Size
+If you find this usual please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group 
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

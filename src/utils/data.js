@@ -53,11 +53,11 @@ const REPL_RATE = 18000;
 
 
 
-export const getFundData = () => {
+const getFundData = () => {
     return fund;
 }
 
-export const getDraftsData = () => {
+const getDraftsData = () => {
     return [india_dao_chitty, india_dao_monish, africa_dao, latam_dao];
 }
 
@@ -79,5 +79,7 @@ export {CELO_TOKEN,
         drafts,
         available_funds_color,
         allocated_funds_color,
-        pending_funds_color
+        pending_funds_color,
+        getFundData,
+        getDraftsData
     }

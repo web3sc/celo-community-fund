@@ -1,4 +1,4 @@
-let {CELO_TOKEN,
+import {CELO_TOKEN,
     GOVERNANCE_ADDRESS,
     CC_ADDRESS,
     OCELOT_ADDRESS,
@@ -6,9 +6,9 @@ let {CELO_TOKEN,
     AFRICA_DAO,
     INDIA_DAO_CHITTY,
     INDIA_DAO_MONISH,
-    LATAM_DAO} = require('./data.js')
-const Web3 = require("web3");
-const ContractKit = require("@celo/contractkit");
+    LATAM_DAO} from './data.js'
+import Web3 from "web3";
+import ContractKit from "@celo/contractkit";
 
 const web3 = new Web3("https://forno.celo.org");
 const kit = ContractKit.newKitFromWeb3(web3);
@@ -29,21 +29,18 @@ const getCeloCommunityFundStatus = async () => {
 const celo = await kit._web3Contracts.getGoldToken()
 
 let community_fund = await celo.methods.balanceOf(GOVERNANCE_ADDRESS)
-console.log('community fund: ' + await community_fund.call())
 let community_fund_result = parseInt(Web3.utils.fromWei(await community_fund.call()))
 
 let Prezenti = await celo.methods.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
-console.log('community fund: ' + await Prezenti.call())
 let prezenti_result = parseInt(Web3.utils.fromWei(await Prezenti.call()))
 
 let Ocelot = await celo.methods.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
-console.log('community fund: ' + await Ocelot.call())
 let ocelot_result = parseInt(Web3.utils.fromWei(await Ocelot.call()))
 
 let CC = await celo.methods.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
 let cc_result = parseInt(Web3.utils.fromWei(await CC.call()))
 
-
+ console.log("-------Community Fund-------")
  console.log( "Community Fund: " + community_fund_result)
  console.log("Prezenti: " + prezenti_result)
  console.log("Ocelot: " + ocelot_result)
