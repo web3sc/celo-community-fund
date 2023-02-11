@@ -10,6 +10,7 @@ import { useCelo } from '@celo/react-celo';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import {
+  CEUR_TOKEN,
   GOVERNANCE_ADDRESS,
   CC_ADDRESS,
   OCELOT_ADDRESS,
@@ -80,13 +81,20 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
+    let reserve = await kit.contracts.getExchange()
     let populatedData = [];
     let tableData = [] 
     
-    //Community Fund
+    //Community Fund CELO
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
-    let community_fund_result = getCeloValue(community_fund.c[0])
-    setCommunityFund(community_fund_result)
+    let community_fund_celo_result = getCeloValue(community_fund.c[0])
+    let community_fund_eur_result = getCeloValue(community_fund.c[1])
+    setCommunityFund(community_fund_celo_result)
+
+    //Exchange CELO <> cEUR
+    //let exchange_rate = await reserve.getExchangeRate()
+    console.log('exchange rate', reserve)
+    //let exchange_rate_result = getCeloValue(exchange_rate.c[0])
     
     //Prezenti
     let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
@@ -102,19 +110,22 @@ function App() {
 
     let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
 
-    let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
-    let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
-    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
-    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
-    let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
-    let drafts_remaining_percentage = Math.round((drafts / community_fund_result) * 100)
+    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (prezenti_result + ocelot_result + cc_result + drafts))
+    let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_celo_result) * 100)
+    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_celo_result) * 100)
+    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_celo_result) * 100)
+    let cc_remaining_percentage = Math.round((cc_result / community_fund_celo_result) * 100)
+    let drafts_remaining_percentage = Math.round((drafts / community_fund_celo_result) * 100)
     
 
     fundData.forEach((fund) => {
-      if(fund.title === 'Community Fund'){
-        fund.approved = community_fund_result.toLocaleString() 
-        fund.amount = community_fund_remainding.toLocaleString()
-        fund.value = community_fund_remaining_percentage
+      if(fund.title === 'Community Fund CELO'){
+        fund.approved = community_fund_celo_result.toLocaleString() 
+        fund.amount = community_fund_celo_remainding.toLocaleString()
+        fund.value = community_fund_celo_remaining_percentage
+      } else if(fund.title === 'Community Fund cEUR'){
+        fund.amount = community_fund_celo_result.toLocaleString()
+        fund.value = 100
       } else if(fund.title === 'Prezenti'){
         fund.amount = prezenti_result
         fund.value = prezenti_remaining_percentage
