@@ -2,7 +2,7 @@
 
 ## Overview 
 
-This repository to is to keep a canonical history of the Celo Community Fund status and intiatives that have utilized the fund. Previously, the data was segregated and hard to know the current initiatives that were in draft proposal phase, intiatives that had spend approval and the remaining funds avialable to them. It was also difficult to have a high level overview of the total funds.
+This repository is to keep a canonical history of the Celo Community Fund status and intiatives that have utilized the fund. Previously, the data was segregated and hard to decifer current initiatives that were in draft proposal phase, intiatives that had spend approval and the remaining funds available to them. It was also difficult to have a high level overview of the total funds.
 
 ## What is the fund?
 
@@ -72,6 +72,6 @@ This is a community run project, all contributions are welcome. If you have feed
 
 ## Pay it Forward
 
-If you find this usual please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group 
+If you find this useful please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group 
 
 
