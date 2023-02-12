@@ -2,6 +2,7 @@ import React from 'react';
 import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
+import ceur from './images/ceur.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
 import Table from './components/Table';
@@ -9,6 +10,7 @@ import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import BigNumber from 'bignumber.js';
 import {
   CEUR_TOKEN,
   GOVERNANCE_ADDRESS,
@@ -77,10 +79,10 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
-    let reserve = await kit.contracts.getExchange()
+    //let reserve = await kit.contracts.getContract('ExchangeEUR')
     let populatedData = [];
     let tableData = [] 
-    
+    console.log('looping through funds')
     //Community Fund CELO
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
     let community_fund_celo_result = getCeloValue(community_fund.c[0])
@@ -89,8 +91,12 @@ function App() {
 
     //Exchange CELO <> cEUR
     //let exchange_rate = await reserve.getExchangeRate()
-    console.log('exchange rate', reserve)
-    //let exchange_rate_result = getCeloValue(exchange_rate.c[0])
+    //console.log('eur-exchange', reserve)
+
+    // let community_fund_eur_celo_quote = await reserve.quoteStableSell(community_fund_eur_result)
+    // console.log('exchange quote', community_fund_eur_celo_quote)
+    // let community_fund_celo_eur_xchange = getCeloValue(community_fund_eur_celo_quote.c[0])
+    // console.log('exchange rate', community_fund_celo_eur_xchange)
     
     //Prezenti
     let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
@@ -223,7 +229,7 @@ function App() {
       </div>
       <div className="App-header">
       <p className='title'>Community Fund Status</p> 
-      <h4 className='dollars' >{communityFund.toLocaleString() +  ' '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4>
+      <h4  >{communityFund.toLocaleString() +  ' '}<span><img className='dollars' className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span> <span>2,000,000 </span> <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span></h4>
       <div className='pie-chart'>
       <PieChart
         data={data}
