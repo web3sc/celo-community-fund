@@ -160,17 +160,19 @@ function App() {
     
     setData(populatedData)
     setTable(tableData)
-  } , [fundData, draftsData]);
+  } , []);
 
 
 
   useEffect(() => {
     populateData()
+    console.log('loop')
     let interval = setInterval(() => {
     populateData()
+    console.log('loop2')
   }, 10000);
   return () => clearInterval(interval);
-  }, [ populateData]);
+  }, []);
 
 
 
