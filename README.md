@@ -26,6 +26,16 @@ The Community Fund receives assets from three sources:
 | 3 | Climate Collective | 2022-06-11 | 4,000,000 | [site](https://climatecollective.org/) | Ongoing |
 | 4 | Prezenti | 2022-06-11 | 800,000 | [site](https://prezenti.xyz) | Ongoing |
 
+## Drafts
+
+|  №  |      Name       |  Amount | Webpage | Status |
+|:---:|:---------------:|:-----:|:------:|:------:|
+| 1 | India DAO Chitty | 270,000 | [forum post](https://forum.celo.org/t/celo-indiadao-regional-dao-proposal/4207) | Forum |
+| 2 | India DAO Monish | 80,000 | [forum post]() | Forum |
+| 3 | Africa DAO |  TBD | [forum post](https://forum.celo.org/t/celo-africa-regional-dao-proposal/4054) | Forum |
+| 4 | LATAM DAO  | TBD | [forum post]() | Forum |
+
+
 ## Webpage
 
 > Note: the fund also holds a balance of cEUR that is not being tracked at present.
