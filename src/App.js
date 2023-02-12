@@ -159,9 +159,9 @@ function App() {
 
 
   useEffect(() => {
+    populateData()
     let interval = setInterval(() => {
     populateData()
-    console.log('loop')
   }, 10000);
   return () => clearInterval(interval);
   }, [ populateData]);
