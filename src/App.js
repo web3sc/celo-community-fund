@@ -73,10 +73,6 @@ function App() {
     []
   )
 
-   //TODO: Get better table package
-   const populateTableData = useCallback(async () =>{
-
-  },[fundData, draftsData])
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
@@ -147,16 +143,17 @@ function App() {
     
     setData(populatedData)
     setTable(tableData)
-    
   } , [fundData, draftsData]);
 
 
 
   useEffect(() => {
+    let interval = setInterval(() => {
     populateData()
-    populateTableData()
-
-  }, [ populateData, populateTableData]);
+    console.log('loop')
+  }, 10000);
+  return () => clearInterval(interval);
+  }, [ populateData]);
 
 
 
