@@ -38,7 +38,7 @@ The Community Fund receives assets from three sources:
 
 ## Webpage
 
-> Note: the fund also holds a balance of cEUR that is not being tracked at present.
+> Note: the page factors in both CELO and cEUR which are the tokens that have substantial value.
 
 [celocommunityfund.xyz](https://www.celocommunityfund.xyz) shows the current balance of the funds available in the [celo governance address](https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972/coin-balances#address-tabs)(Celo Community Fund) and displays a pie chart with a high level breakdown of its contents and their percentage relevant to the total amount. This consists of 3 elements:
 
