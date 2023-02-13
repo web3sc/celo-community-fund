@@ -274,15 +274,15 @@ function App() {
           <tbody>
             <tr>
               <td style={{ backgroundColor: allocated_funds_color }} />
-              <td>Intiative Celo Available</td>
+              <td>Intiative Assets Available</td>
             </tr>
             <tr>
               <td style={{ backgroundColor: pending_funds_color }} />
-              <td>Draft Proposals</td>
+              <td>Draft Proposals Assets</td>
             </tr>
             <tr>
               <td style={{ backgroundColor: available_funds_color }} />
-              <td>Fund Celo Available</td>
+              <td>Fund Assets Available</td>
             </tr>
 
           </tbody>
