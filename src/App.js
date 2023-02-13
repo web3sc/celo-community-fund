@@ -234,8 +234,9 @@ function App() {
         <button className='info' onClick={openModal}><InfoIcon  /></button>
       </div>
       <div className="App-header">
-      <p className='title'>Community Fund Status</p>
-      <h4  >{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span></h4> 
+      <h3 >Community Fund Status</h3>
+      
+      <h4  ><p className='amount-disclaimer'>(Combined total in cUSD)</p>{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span><hr/></h4> 
       <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span></h4>
       <div className='pie-chart'>
       <PieChart

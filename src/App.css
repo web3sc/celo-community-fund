@@ -45,6 +45,10 @@ tr{
   border-bottom: #282c34 3px solid;
 }
 
+.amount-disclaimer {
+  font-size: 0.8rem;
+}
+
 
 .celo-logo {
     position: absolute;
