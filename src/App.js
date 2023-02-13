@@ -64,6 +64,7 @@ function App() {
       {
         Header: 'Approved',
         accessor: 'approved',
+        Cell: ({row, value}) => (row.original.draft) ? <span style={{color:'#E70532'}}>{row.original.approved}</span> : <span>{value}</span>, 
       },
       {
         Header: 'Available',
@@ -118,7 +119,7 @@ function App() {
 
     let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
     let community_fund_total_celo = community_fund_celo_result + community_fund_eur_in_celo
-    let community_fund_celo_remainding = Math.round(community_fund_total_celo - (prezenti_result + ocelot_result + cc_result + drafts))
+    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (prezenti_result + ocelot_result + cc_result + drafts))
     let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
     let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
     let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
@@ -159,7 +160,7 @@ function App() {
     })
 
     draftsData.forEach((draft) => {
-      tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
+      tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: draft.amount, proposal: draft.proposal, draft:true  })
     })
     
     setData(populatedData)
@@ -273,7 +274,7 @@ function App() {
           <tbody>
             <tr>
               <td style={{ backgroundColor: allocated_funds_color }} />
-              <td>Celo Available</td>
+              <td>Intiative Celo Available</td>
             </tr>
             <tr>
               <td style={{ backgroundColor: pending_funds_color }} />

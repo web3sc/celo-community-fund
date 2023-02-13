@@ -39,11 +39,11 @@ var cc = { title: "Climate Collective", value: 0, amount:0, color: allocated_fun
 
 
 //Drafts
-var india_dao_chitty = { title: "India DAO Chitty", value: INDIA_DAO_CHITTY, color: pending_funds_color,label:'', approved:0, proposal: "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0064.md" }
-var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0 }
-var africa_dao = { title: "Africa DAO", value: AFRICA_DAO, color: pending_funds_color,label:'', approved:0 }
-var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_funds_color,label:'', approved:0 }
-var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0 }
+var india_dao_chitty = { title: "India DAO Chitty", value: INDIA_DAO_CHITTY, color: pending_funds_color,label:'', approved:0, proposal: "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0064.md", draft: true }
+var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0, draft: true}
+var africa_dao = { title: "Africa DAO", value: AFRICA_DAO, color: pending_funds_color,label:'', approved:0, draft: true }
+var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_funds_color,label:'', approved:0, draft: true }
+var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0, draft: true }
 
 
 var fund = [ community_fund_celo, community_fund_eur, prezenti, ocelot, cc, drafts ]
