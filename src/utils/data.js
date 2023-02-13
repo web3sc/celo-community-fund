@@ -1,6 +1,7 @@
 
 //Addresses
 const CELO_TOKEN = "0x471EcE3750Da237f93B8E339c536989b8978a438";
+const CEUR_TOKEN = "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73"
 const GOVERNANCE_ADDRESS = "0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972";
 const CC_ADDRESS = "0x275D5828bF7e5aaf51Bf8EF2f0668ac4a98F0d23";
 const OCELOT_ADDRESS = "0x0D8b5f1CD567656b6Ad4c88e8F082F1f694e5Bb5";
@@ -30,7 +31,8 @@ var allocated_funds_color = "#56DF7C";
 var pending_funds_color = "#9B9B9B";
 
 //FUND and ALLOCATIONS
-var community_fund= { title: "Community Fund", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
+var community_fund_celo= { title: "Community Fund CELO", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
+var community_fund_eur= { title: "Community Fund cEUR", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
 var prezenti = { title: "Prezenti", value: 0, amount:0, color: allocated_funds_color,label:'', approved:PREZENTI_APPROVAL.toLocaleString(), address: PREZENTI_ADDRESS, proposal: prezenti_proposal   }
 var ocelot = { title: "Ocelot", value: 0, amount:0, color: allocated_funds_color,label:'', approved:OCELOT_APPROVAL.toLocaleString(), address: OCELOT_ADDRESS, proposal: ocelot_proposal }
 var cc = { title: "Climate Collective", value: 0, amount:0, color: allocated_funds_color, label:'', approved:CC_APPROVAL.toLocaleString(), address: CC_ADDRESS, proposal: cc_proposal }
@@ -44,7 +46,7 @@ var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_funds_col
 var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0 }
 
 
-var fund = [ community_fund, prezenti, ocelot, cc, drafts ]
+var fund = [ community_fund_celo, community_fund_eur, prezenti, ocelot, cc, drafts ]
 
 //Estimated Replensh Rate
 //Quick and dirty estimate based on current rate of spending by looking at one day
@@ -63,6 +65,7 @@ const getDraftsData = () => {
 
 
 export {CELO_TOKEN,
+        CEUR_TOKEN,
         GOVERNANCE_ADDRESS,
         CC_ADDRESS,
         OCELOT_ADDRESS,
@@ -72,7 +75,8 @@ export {CELO_TOKEN,
         INDIA_DAO_MONISH,
         LATAM_DAO,
         REPL_RATE,
-        community_fund,
+        community_fund_celo,
+        community_fund_eur,
         prezenti,
         ocelot,
         cc,

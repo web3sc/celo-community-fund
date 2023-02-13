@@ -2,6 +2,8 @@ import React from 'react';
 import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
+import ceur from './images/ceur.png';
+import cusd from './images/cusd.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
 import Table from './components/Table';
@@ -44,6 +46,9 @@ function App() {
   const [table, setTable] = React.useState([])
   const [data, setData] = React.useState([])
   const [communityFund, setCommunityFund] = React.useState(0)
+  const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
+  const [communityFundEur, setCommunityFundEur] = React.useState(0)
+  const [communityFundEurInCelo, setCommunityFundEurInCelo] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
   
   let fundData = getFundData();
@@ -76,14 +81,29 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
+    let euro = await kit.contracts.getContract('StableTokenEUR')
+    let exchange = await kit.contracts.getExchange()
+    let euroExchange = await kit.contracts.getContract('ExchangeEUR')
     let populatedData = [];
-    let tableData = [] 
-    
-    //Community Fund
+    let tableData = [];
+
+    //Community Fund CELO and cEUR
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
-    let community_fund_result = getCeloValue(community_fund.c[0])
-    setCommunityFund(community_fund_result)
-    
+    let community_fund_celo_result = getCeloValue(community_fund.c[0])
+    let community_fund_eur = await euro.balanceOf(GOVERNANCE_ADDRESS)
+    let community_fund_eur_result = getCeloValue(community_fund_eur.c[0])
+    setCommunityFundEur(community_fund_eur_result)
+    setCommunityFundCelo(community_fund_celo_result)
+
+    //Exchange CELO <> cEUR
+    let community_fund_eur_celo_quote = await euroExchange.quoteStableSell(community_fund_eur_result)
+    let community_fund_eur_in_celo = community_fund_eur_celo_quote.c[0]
+    setCommunityFundEurInCelo(community_fund_eur_in_celo)
+
+    //Community Fund in cUSD
+    let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result + community_fund_eur_in_celo)
+    setCommunityFund(community_fund_celo_in_cusd);
+
     //Prezenti
     let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
     let prezenti_result = getCeloValue(Prezenti.c[0])
@@ -97,20 +117,21 @@ function App() {
     let cc_result = getCeloValue(CC.c[0])
 
     let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
-
-    let community_fund_remainding = Math.round(community_fund_result - (prezenti_result + ocelot_result + cc_result + drafts))
-    let community_fund_remaining_percentage = Math.round((community_fund_remainding / community_fund_result) * 100)
-    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_result) * 100)
-    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_result) * 100)
-    let cc_remaining_percentage = Math.round((cc_result / community_fund_result) * 100)
-    let drafts_remaining_percentage = Math.round((drafts / community_fund_result) * 100)
+    let community_fund_total_celo = community_fund_celo_result + community_fund_eur_in_celo
+    let community_fund_celo_remainding = Math.round(community_fund_total_celo - (prezenti_result + ocelot_result + cc_result + drafts))
+    let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
+    let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
+    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
+    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_total_celo) * 100)
+    let cc_remaining_percentage = Math.round((cc_result / community_fund_total_celo) * 100)
+    let drafts_remaining_percentage = Math.round((drafts / community_fund_total_celo) * 100)
     
 
     fundData.forEach((fund) => {
-      if(fund.title === 'Community Fund'){
-        fund.approved = community_fund_result.toLocaleString() 
-        fund.amount = community_fund_remainding.toLocaleString()
-        fund.value = community_fund_remaining_percentage
+      if(fund.title === 'Community Fund CELO'){
+        fund.approved = community_fund_celo_result.toLocaleString() 
+        fund.amount = community_fund_celo_remainding.toLocaleString()
+        fund.value = community_fund_celo_remaining_percentage
       } else if(fund.title === 'Prezenti'){
         fund.amount = prezenti_result
         fund.value = prezenti_remaining_percentage
@@ -122,7 +143,11 @@ function App() {
         fund.value = cc_remaining_percentage
       } else if(fund.title === 'Drafts'){
         fund.value = drafts_remaining_percentage
-      }
+      } else if (fund.title === 'Community Fund cEUR'){
+        fund.approved = community_fund_eur_in_celo.toLocaleString()
+        fund.amount = community_fund_eur_in_celo.toLocaleString()
+        fund.value = community_fund_eur_in_celo_percentage
+      } 
 
       if(fund.title !== 'Drafts'){
         tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
@@ -136,10 +161,6 @@ function App() {
     draftsData.forEach((draft) => {
       tableData.push({ name: draft.title, approved: draft.approved, available: draft.amount, proposal: draft.proposal })
     })
-
-    
-
-  
     
     setData(populatedData)
     setTable(tableData)
@@ -149,10 +170,8 @@ function App() {
 
   useEffect(() => {
     populateData()
-    console.log('loop')
     let interval = setInterval(() => {
     populateData()
-    console.log('loop2')
   }, 10000);
   return () => clearInterval(interval);
   }, []);
@@ -198,6 +217,8 @@ function App() {
             <hr/>
             <h3>Est Replenish Rate: ~{REPL_RATE.toLocaleString()} CELO daily</h3>
             <hr/>
+            <p>* All values below in CELO</p>
+
           </div>
         <div className="modal-table">
         <Table columns={columns} data={table}/>
@@ -213,8 +234,9 @@ function App() {
         <button className='info' onClick={openModal}><InfoIcon  /></button>
       </div>
       <div className="App-header">
-      <p className='title'>Community Fund Status</p> 
-      <h4 className='dollars' >{communityFund.toLocaleString() +  ' '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4>
+      <p className='title'>Community Fund Status</p>
+      <h4  >{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span></h4> 
+      <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span></h4>
       <div className='pie-chart'>
       <PieChart
         data={data}
@@ -246,7 +268,6 @@ function App() {
       </div>
       </div>
       <div className='legend'>
-        {/* Add your legend here */}
         <table>
           <tbody>
             <tr>
