@@ -47,8 +47,8 @@ function App() {
   const [data, setData] = React.useState([])
   const [communityFund, setCommunityFund] = React.useState(0)
   const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
-  const [communityFundEur, setCommunityFundEur] = React.useState(0)
-  const [communityFundEurInCelo, setCommunityFundEurInCelo] = React.useState(0)
+  //const [communityFundEur, setCommunityFundEur] = React.useState(0)
+  //const [communityFundEurInCelo, setCommunityFundEurInCelo] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
   
   let fundData = getFundData();
@@ -91,18 +91,18 @@ function App() {
     //Community Fund CELO and cEUR
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
     let community_fund_celo_result = getCeloValue(community_fund.c[0])
-    let community_fund_eur = await euro.balanceOf(GOVERNANCE_ADDRESS)
-    let community_fund_eur_result = getCeloValue(community_fund_eur.c[0])
-    setCommunityFundEur(community_fund_eur_result)
+    //let community_fund_eur = await euro.balanceOf(GOVERNANCE_ADDRESS)
+    //let community_fund_eur_result = getCeloValue(community_fund_eur.c[0])
+    //setCommunityFundEur(community_fund_eur_result)
     setCommunityFundCelo(community_fund_celo_result)
 
     //Exchange CELO <> cEUR
-    let community_fund_eur_celo_quote = await euroExchange.quoteStableSell(community_fund_eur_result)
-    let community_fund_eur_in_celo = community_fund_eur_celo_quote.c[0]
-    setCommunityFundEurInCelo(community_fund_eur_in_celo)
+    // let community_fund_eur_celo_quote = await euroExchange.quoteStableSell(community_fund_eur_result)
+    // let community_fund_eur_in_celo = community_fund_eur_celo_quote.c[0]
+    // setCommunityFundEurInCelo(community_fund_eur_in_celo)
 
     //Community Fund in cUSD
-    let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result + community_fund_eur_in_celo)
+    let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
     setCommunityFund(community_fund_celo_in_cusd);
 
     //Prezenti
@@ -118,10 +118,10 @@ function App() {
     let cc_result = getCeloValue(CC.c[0])
 
     let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
-    let community_fund_total_celo = community_fund_celo_result + community_fund_eur_in_celo
+    let community_fund_total_celo = community_fund_celo_result //+ community_fund_eur_in_celo
     let community_fund_celo_remainding = Math.round(community_fund_celo_result - (prezenti_result + ocelot_result + cc_result + drafts))
     let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
-    let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
+    //let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
     let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
     let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_total_celo) * 100)
     let cc_remaining_percentage = Math.round((cc_result / community_fund_total_celo) * 100)
@@ -144,11 +144,12 @@ function App() {
         fund.value = cc_remaining_percentage
       } else if(fund.title === 'Drafts'){
         fund.value = drafts_remaining_percentage
-      } else if (fund.title === 'Community Fund cEUR'){
-        fund.approved = community_fund_eur_in_celo.toLocaleString()
-        fund.amount = community_fund_eur_in_celo.toLocaleString()
-        fund.value = community_fund_eur_in_celo_percentage
       } 
+      // else if (fund.title === 'Community Fund cEUR'){
+      //   fund.approved = community_fund_eur_in_celo.toLocaleString()
+      //   fund.amount = community_fund_eur_in_celo.toLocaleString()
+      //   fund.value = community_fund_eur_in_celo_percentage
+      // } 
 
       if(fund.title !== 'Drafts'){
         tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
@@ -237,8 +238,9 @@ function App() {
       <div className="App-header">
       <h3 >Community Fund Status</h3>
       
-      <h4  ><p className='amount-disclaimer'>(Combined total in cUSD)</p>{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span><hr/></h4> 
-      <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span></h4>
+      {/* <h4  ><p className='amount-disclaimer'>(Combined total in cUSD)</p>{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span><hr/></h4>  */}
+      {/* add below for cEUR -  <span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span> */}
+      <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4> 
       <div className='pie-chart'>
       <PieChart
         data={data}
