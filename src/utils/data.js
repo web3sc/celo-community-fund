@@ -32,7 +32,7 @@ var pending_funds_color = "#9B9B9B";
 
 //FUND and ALLOCATIONS
 var community_fund_celo= { title: "Community Fund CELO", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
-var community_fund_eur= { title: "Community Fund cEUR", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
+//var community_fund_eur= { title: "Community Fund cEUR", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
 var prezenti = { title: "Prezenti", value: 0, amount:0, color: allocated_funds_color,label:'', approved:PREZENTI_APPROVAL.toLocaleString(), address: PREZENTI_ADDRESS, proposal: prezenti_proposal   }
 var ocelot = { title: "Ocelot", value: 0, amount:0, color: allocated_funds_color,label:'', approved:OCELOT_APPROVAL.toLocaleString(), address: OCELOT_ADDRESS, proposal: ocelot_proposal }
 var cc = { title: "Climate Collective", value: 0, amount:0, color: allocated_funds_color, label:'', approved:CC_APPROVAL.toLocaleString(), address: CC_ADDRESS, proposal: cc_proposal }
@@ -46,7 +46,7 @@ var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_funds_col
 var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0, draft: true }
 
 
-var fund = [ community_fund_celo, community_fund_eur, prezenti, ocelot, cc, drafts ]
+var fund = [ community_fund_celo, prezenti, ocelot, cc, drafts ] //, community_fund_eur
 
 //Estimated Replensh Rate
 //Quick and dirty estimate based on current rate of spending by looking at one day
@@ -76,7 +76,7 @@ export {CELO_TOKEN,
         LATAM_DAO,
         REPL_RATE,
         community_fund_celo,
-        community_fund_eur,
+        //community_fund_eur,
         prezenti,
         ocelot,
         cc,
