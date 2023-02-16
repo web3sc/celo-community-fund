@@ -2,8 +2,6 @@ import React from 'react';
 import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
-import ceur from './images/ceur.png';
-import cusd from './images/cusd.png';
 import './App.css';
 import { PieChart } from "react-minimal-pie-chart";
 import Table from './components/Table';
@@ -45,7 +43,7 @@ function App() {
   const { kit } = useCelo();
   const [table, setTable] = React.useState([])
   const [data, setData] = React.useState([])
-  const [communityFund, setCommunityFund] = React.useState(0)
+  //const [communityFund, setCommunityFund] = React.useState(0)
   const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
   //const [communityFundEur, setCommunityFundEur] = React.useState(0)
   //const [communityFundEurInCelo, setCommunityFundEurInCelo] = React.useState(0)
@@ -82,9 +80,9 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
-    let euro = await kit.contracts.getContract('StableTokenEUR')
-    let exchange = await kit.contracts.getExchange()
-    let euroExchange = await kit.contracts.getContract('ExchangeEUR')
+    //let euro = await kit.contracts.getContract('StableTokenEUR')
+    //let exchange = await kit.contracts.getExchange()
+    //let euroExchange = await kit.contracts.getContract('ExchangeEUR')
     let populatedData = [];
     let tableData = [];
 
@@ -102,8 +100,8 @@ function App() {
     // setCommunityFundEurInCelo(community_fund_eur_in_celo)
 
     //Community Fund in cUSD
-    let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
-    setCommunityFund(community_fund_celo_in_cusd);
+    //let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
+    //setCommunityFund(community_fund_celo_in_cusd);
 
     //Community Appreciation Gifts
     let Community_appreciation_gifts = await celo.allowance(GOVERNANCE_ADDRESS, COMMUNITY_APPRECIATION_GIFTS_ADDRESS)
@@ -247,6 +245,7 @@ function App() {
       {/* <h4  ><p className='amount-disclaimer'>(Combined total in cUSD)</p>{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span><hr/></h4>  */}
       {/* add below for cEUR -  <span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span> */}
       <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4> 
+      <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
       <div className='pie-chart'>
       <PieChart
         data={data}
@@ -276,6 +275,7 @@ function App() {
         center={[55, 55]}
       />
       </div>
+      </a>
       </div>
       <div className='legend'>
         <table>
