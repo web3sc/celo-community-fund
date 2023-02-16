@@ -22,9 +22,10 @@ The Community Fund receives assets from three sources:
 |  №  |      Name       | Date | Amount | Webpage | Status |
 |:---:|:---------------:|:------:|:-----:|:------:|:------:|
 | 1 | CCF1 | 2020-12-01 | 665,387 | [site](https://celocommunityfund.org/) | Complete |
-| 2 | Ocelot | 2021-12 | 3,000,000 | [site](http://ocelot.xyz/) | Ongoing |
-| 3 | Climate Collective | 2022-06-11 | 4,000,000 | [site](https://climatecollective.org/) | Ongoing |
-| 4 | Prezenti | 2022-06-11 | 800,000 | [site](https://prezenti.xyz) | Ongoing |
+| 2 | Community Appreciation Gifts | 2020-01-27 | 15000 | N/A | Complete |
+| 3 | Ocelot | 2021-12 | 3,000,000 | [site](http://ocelot.xyz/) | Ongoing |
+| 4 | Climate Collective | 2022-06-11 | 4,000,000 | [site](https://climatecollective.org/) | Ongoing |
+| 5 | Prezenti | 2022-06-11 | 800,000 | [site](https://prezenti.xyz) | Ongoing |
 
 ## Drafts
 

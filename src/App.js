@@ -15,7 +15,7 @@ import {
   GOVERNANCE_ADDRESS,
   CC_ADDRESS,
   OCELOT_ADDRESS,
-  PREZENTI_ADDRESS,
+  COMMUNITY_APPRECIATION_GIFTS_ADDRESS,
   REPL_RATE,
   available_funds_color,
   allocated_funds_color,
@@ -105,9 +105,9 @@ function App() {
     let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
     setCommunityFund(community_fund_celo_in_cusd);
 
-    //Prezenti
-    let Prezenti = await celo.allowance(GOVERNANCE_ADDRESS, PREZENTI_ADDRESS)
-    let prezenti_result = getCeloValue(Prezenti.c[0])
+    //Community Appreciation Gifts
+    let Community_appreciation_gifts = await celo.allowance(GOVERNANCE_ADDRESS, COMMUNITY_APPRECIATION_GIFTS_ADDRESS)
+    let community_appreciation_gifts_result = getCeloValue(Community_appreciation_gifts.c[0])
 
     //Ocelot
     let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
@@ -117,14 +117,20 @@ function App() {
     let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
     let cc_result = getCeloValue(CC.c[0])
 
+
+    //get percentage of funds
     let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
+    //community fund
     let community_fund_total_celo = community_fund_celo_result //+ community_fund_eur_in_celo
-    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (prezenti_result + ocelot_result + cc_result + drafts))
+    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (community_appreciation_gifts_result + ocelot_result + cc_result + drafts))
     let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
     //let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
-    let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
+    //initiatives
+    let community_appreciation_gifts_percentage = Math.round((community_appreciation_gifts_result / community_fund_total_celo) * 100)
+    //let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
     let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_total_celo) * 100)
     let cc_remaining_percentage = Math.round((cc_result / community_fund_total_celo) * 100)
+    //drafts
     let drafts_remaining_percentage = Math.round((drafts / community_fund_total_celo) * 100)
     
 
@@ -133,9 +139,9 @@ function App() {
         fund.approved = community_fund_celo_result.toLocaleString() 
         fund.amount = community_fund_celo_remainding.toLocaleString()
         fund.value = community_fund_celo_remaining_percentage
-      } else if(fund.title === 'Prezenti'){
-        fund.amount = prezenti_result
-        fund.value = prezenti_remaining_percentage
+      } else if(fund.title === 'Community Appreciation Gifts'){
+        fund.amount = community_appreciation_gifts_result
+        fund.value = community_appreciation_gifts_percentage
       } else if(fund.title === 'Ocelot'){
         fund.amount = ocelot_result.toLocaleString()
         fund.value = ocelot_remaining_percentage
