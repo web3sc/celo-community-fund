@@ -3,7 +3,8 @@ import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
 import './App.css';
-import { PieChart } from "react-minimal-pie-chart";
+//import { PieChart } from "react-minimal-pie-chart";
+import { ResponsiveSunburst } from '@nivo/sunburst'
 import Table from './components/Table';
 import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
@@ -35,6 +36,32 @@ const customStyles = {
 };
 
 
+const chartData = {
+  "name": "Celo Community Fund",
+  "color": "hsl(325, 70%, 50%)",
+  "children": [
+    {
+      "name": "Contract Balance",
+      "color": "hsl(243, 70%, 50%)",
+      "children": [
+
+      ]
+    },
+    {
+      "name": "Contract Utilized ",
+      "color": "hsl(98, 70%, 50%)",
+      "children": [
+      ]
+    },]
+  }
+
+  
+//Populate with spent funds
+// {
+//   "name": "rgb",
+//   "color": "hsl(322, 70%, 50%)",
+//   "loc": 54596
+// },
 
 
 
@@ -132,41 +159,76 @@ function App() {
     let drafts_remaining_percentage = Math.round((drafts / community_fund_total_celo) * 100)
     
 
-    fundData.forEach((fund) => {
-      if(fund.title === 'Community Fund CELO'){
-        fund.approved = community_fund_celo_result.toLocaleString() 
-        fund.amount = community_fund_celo_remainding.toLocaleString()
-        fund.value = community_fund_celo_remaining_percentage
-      } else if(fund.title === 'Community Appreciation Gifts'){
-        fund.amount = community_appreciation_gifts_result
-        fund.value = community_appreciation_gifts_percentage
-      } else if(fund.title === 'Ocelot'){
-        fund.amount = ocelot_result.toLocaleString()
-        fund.value = ocelot_remaining_percentage
-      } else if(fund.title === 'Climate Collective'){
-        fund.amount = cc_result.toLocaleString()
-        fund.value = cc_remaining_percentage
-      } else if(fund.title === 'Drafts'){
-        fund.value = drafts_remaining_percentage
-      } 
-      // else if (fund.title === 'Community Fund cEUR'){
-      //   fund.approved = community_fund_eur_in_celo.toLocaleString()
-      //   fund.amount = community_fund_eur_in_celo.toLocaleString()
-      //   fund.value = community_fund_eur_in_celo_percentage
-      // } 
+    // fundData.forEach((fund) => {
+    //   if(fund.title === 'Community Fund CELO'){
+    //     fund.approved = community_fund_celo_result.toLocaleString() 
+    //     fund.amount = community_fund_celo_remainding.toLocaleString()
+    //     fund.value = community_fund_celo_remaining_percentage
+    //   } else if(fund.title === 'Community Appreciation Gifts'){
+    //     fund.amount = community_appreciation_gifts_result
+    //     fund.value = community_appreciation_gifts_percentage
+    //   } else if(fund.title === 'Ocelot'){
+    //     fund.amount = ocelot_result.toLocaleString()
+    //     fund.value = ocelot_remaining_percentage
+    //   } else if(fund.title === 'Climate Collective'){
+    //     fund.amount = cc_result.toLocaleString()
+    //     fund.value = cc_remaining_percentage
+    //   } else if(fund.title === 'Drafts'){
+    //     fund.value = drafts_remaining_percentage
+    //   } 
+    //   // else if (fund.title === 'Community Fund cEUR'){
+    //   //   fund.approved = community_fund_eur_in_celo.toLocaleString()
+    //   //   fund.amount = community_fund_eur_in_celo.toLocaleString()
+    //   //   fund.value = community_fund_eur_in_celo_percentage
+    //   // } 
 
-      if(fund.title !== 'Drafts'){
-        tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
-        }
+    //   if(fund.title !== 'Drafts'){
+    //     tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
+    //     }
 
-      if( fund.amount !== 0){
-        populatedData.push(fund)
+    //   if( fund.amount !== 0){
+    //     populatedData.push(fund)
+    //   }
+    // })
+
+    // draftsData.forEach((draft) => {
+    //   tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: draft.amount, proposal: draft.proposal, draft:true  })
+    // })
+
+    fundData.forEach( async(fund) => {
+      let initative_available = 0 
+      //Update Commmunity Fund CELO Available
+      if(fund.title === 'Community Fund'){
+        fund.available = community_fund_celo_result - initative_available
+        console.log('fund.available', fund.available)
+      }else if(fund.title !== 'Drafts'){
+      let allowance_available = await celo.allowance(GOVERNANCE_ADDRESS, fund.address)
+      fund.available = getCeloValue(allowance_available.c[0])
+      fund.used = fund.approved - fund.available
+    }else if(fund.title === 'Drafts'){
+      fund.available = fund.amount
+    }
+
+    //Add available funds to chart
+    if(chartData.children[0].children.find((child) => child.name === fund.title) === undefined){
+      chartData.children[0].children.push({ name: fund.title, loc: fund.available })
+      initative_available = initative_available + fund.available
       }
+      //Add utilized funds to chart
+      if(chartData.children[1].children.find((child) => child.name === fund.title) === undefined){
+      chartData.children[1].children.push({ name: fund.title, loc: fund.used })
+      }
+
+
+    console.log('chartData', chartData)
+    if(fund.title !== 'Drafts'){
+      tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
+    }
     })
 
-    draftsData.forEach((draft) => {
-      tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: draft.amount, proposal: draft.proposal, draft:true  })
-    })
+
+
+
     
     setData(populatedData)
     setTable(tableData)
@@ -247,7 +309,38 @@ function App() {
       <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4> 
       <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
       <div className='pie-chart'>
-      <PieChart
+      <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
+        <ResponsiveSunburst
+        data={chartData}
+        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+        id="name"
+        value="loc"
+        cornerRadius={2}
+        borderColor={{ theme: 'background' }}
+        colors={{ scheme: 'nivo' }}
+        childColor={{
+            from: 'color',
+            modifiers: [
+                [
+                    'brighter',
+                    0.1
+                ]
+            ]
+        }}
+        enableArcLabels={true}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+            from: 'color',
+            modifiers: [
+                [
+                    'darker',
+                    1.4
+                ]
+            ]
+        }}
+    />
+    </div>
+      {/* <PieChart
         data={data}
         segmentsShift={1}
         label={({ x, y, dx, dy, dataEntry }) => (
@@ -273,7 +366,7 @@ function App() {
         animationEasing="ease-out"
         viewBoxSize={[110, 110]}
         center={[55, 55]}
-      />
+      /> */}
       </div>
       </a>
       </div>
