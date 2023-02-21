@@ -107,93 +107,15 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
-    //let euro = await kit.contracts.getContract('StableTokenEUR')
-    //let exchange = await kit.contracts.getExchange()
-    //let euroExchange = await kit.contracts.getContract('ExchangeEUR')
     let populatedData = [];
     let tableData = [];
 
     //Community Fund CELO and cEUR
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
     let community_fund_celo_result = getCeloValue(community_fund.c[0])
-    //let community_fund_eur = await euro.balanceOf(GOVERNANCE_ADDRESS)
-    //let community_fund_eur_result = getCeloValue(community_fund_eur.c[0])
-    //setCommunityFundEur(community_fund_eur_result)
     setCommunityFundCelo(community_fund_celo_result)
 
-    //Exchange CELO <> cEUR
-    // let community_fund_eur_celo_quote = await euroExchange.quoteStableSell(community_fund_eur_result)
-    // let community_fund_eur_in_celo = community_fund_eur_celo_quote.c[0]
-    // setCommunityFundEurInCelo(community_fund_eur_in_celo)
 
-    //Community Fund in cUSD
-    //let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
-    //setCommunityFund(community_fund_celo_in_cusd);
-
-    //Community Appreciation Gifts
-    let Community_appreciation_gifts = await celo.allowance(GOVERNANCE_ADDRESS, COMMUNITY_APPRECIATION_GIFTS_ADDRESS)
-    let community_appreciation_gifts_result = getCeloValue(Community_appreciation_gifts.c[0])
-
-    //Ocelot
-    let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
-    let ocelot_result = getCeloValue(Ocelot.c[0])
-    
-    //Climate Collective
-    let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
-    let cc_result = getCeloValue(CC.c[0])
-
-
-    //get percentage of funds
-    let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
-    //community fund
-    let community_fund_total_celo = community_fund_celo_result //+ community_fund_eur_in_celo
-    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (community_appreciation_gifts_result + ocelot_result + cc_result + drafts))
-    let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
-    //let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
-    //initiatives
-    let community_appreciation_gifts_percentage = Math.round((community_appreciation_gifts_result / community_fund_total_celo) * 100)
-    //let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
-    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_total_celo) * 100)
-    let cc_remaining_percentage = Math.round((cc_result / community_fund_total_celo) * 100)
-    //drafts
-    let drafts_remaining_percentage = Math.round((drafts / community_fund_total_celo) * 100)
-    
-
-    // fundData.forEach((fund) => {
-    //   if(fund.title === 'Community Fund CELO'){
-    //     fund.approved = community_fund_celo_result.toLocaleString() 
-    //     fund.amount = community_fund_celo_remainding.toLocaleString()
-    //     fund.value = community_fund_celo_remaining_percentage
-    //   } else if(fund.title === 'Community Appreciation Gifts'){
-    //     fund.amount = community_appreciation_gifts_result
-    //     fund.value = community_appreciation_gifts_percentage
-    //   } else if(fund.title === 'Ocelot'){
-    //     fund.amount = ocelot_result.toLocaleString()
-    //     fund.value = ocelot_remaining_percentage
-    //   } else if(fund.title === 'Climate Collective'){
-    //     fund.amount = cc_result.toLocaleString()
-    //     fund.value = cc_remaining_percentage
-    //   } else if(fund.title === 'Drafts'){
-    //     fund.value = drafts_remaining_percentage
-    //   } 
-    //   // else if (fund.title === 'Community Fund cEUR'){
-    //   //   fund.approved = community_fund_eur_in_celo.toLocaleString()
-    //   //   fund.amount = community_fund_eur_in_celo.toLocaleString()
-    //   //   fund.value = community_fund_eur_in_celo_percentage
-    //   // } 
-
-    //   if(fund.title !== 'Drafts'){
-    //     tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
-    //     }
-
-    //   if( fund.amount !== 0){
-    //     populatedData.push(fund)
-    //   }
-    // })
-
-    // draftsData.forEach((draft) => {
-    //   tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: draft.amount, proposal: draft.proposal, draft:true  })
-    // })
 
     fundData.forEach( async(fund) => {
       let initative_available = 0 
@@ -340,33 +262,6 @@ function App() {
         }}
     />
     </div>
-      {/* <PieChart
-        data={data}
-        segmentsShift={1}
-        label={({ x, y, dx, dy, dataEntry }) => (
-          <text
-              x={x}
-              y={y}
-              dx={dx}
-              dy={dy}
-              dominant-baseline="central"
-              text-anchor="middle"
-              style={{
-                  fill: '#000', pointerEvents: 'none', fontSize: '2px'
-              }}>
-              <tspan x={x} y={y} dx={dx} dy={dy}>{dataEntry.title + ' ' + dataEntry.value + '%'}</tspan>
-
-          </text>
-      )}
-        labelStyle={(index) => ({
-          fontSize: '2px',
-        })}
-        animation
-        animationDuration={500}
-        animationEasing="ease-out"
-        viewBoxSize={[110, 110]}
-        center={[55, 55]}
-      /> */}
       </div>
       </a>
       </div>
