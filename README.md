@@ -37,6 +37,13 @@ The Community Fund receives assets from three sources:
 | 4 | LATAM DAO  | TBD | [forum post]() | Forum |
 
 
+## Adding an Intiative
+To add an intiative, navigate to the appropriate file in the `src/data` directory. There are 3 files each with instructions at the top:
+
+- draft_initiatives
+- active_initiatives
+- completed_initiatives
+
 ## Webpage
 
 > Note: the page factors in both CELO and cEUR which are the tokens that have substantial value.

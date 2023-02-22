@@ -3,7 +3,6 @@ import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
 import './App.css';
-//import { PieChart } from "react-minimal-pie-chart";
 import { ResponsiveSunburst } from '@nivo/sunburst'
 import Table from './components/Table';
 import Modal from 'react-modal';
@@ -12,9 +11,6 @@ import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   GOVERNANCE_ADDRESS,
-  CC_ADDRESS,
-  OCELOT_ADDRESS,
-  COMMUNITY_APPRECIATION_GIFTS_ADDRESS,
   REPL_RATE,
   contract_celo_color,
   contract_celo_spent_color,
@@ -22,8 +18,9 @@ import {
   pending_drafts_celo_color,
   initiate_spent_celo_color,
   initiative_available_celo_color,
-  getFundData,
-  getDraftsData } from './utils/data';
+  chartData } from './data/data';
+import { initiatives } from './data/active_initiatives';
+import { drafts } from './data/drafts';
 
 
 
@@ -39,24 +36,7 @@ const customStyles = {
 };
 
 
-const chartData = {
-  "name": "Celo Community Fund",
-  "color": "hsl(325, 70%, 50%)",
-  "children": [
-    {
-      "name": "Contract Balance",
-      "color": contract_celo_available_color,
-      "children": [
 
-      ]
-    },
-    {
-      "name": "Contract Utilized ",
-      "color": contract_celo_spent_color,
-      "children": [
-      ]
-    },]
-  }
 
 
 
@@ -67,8 +47,8 @@ function App() {
   const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
   
-  let fundData = getFundData();
-  let draftsData = getDraftsData();
+  let fundData = initiatives;
+  let draftsData = drafts;
  
   
   const columns = React.useMemo(
