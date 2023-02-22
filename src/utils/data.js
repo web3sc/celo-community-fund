@@ -32,26 +32,29 @@ const ccf1_proposal = "https://celo.stake.id/#/proposal/18"
 
 
 //colors
-var available_funds_color = "#FCFF52";
-var allocated_funds_color = "#56DF7C";
-var pending_funds_color = "#9B9B9B";
+var contract_celo_color = "#FCFF52";
+var contract_celo_spent_color = "#FF9A51";
+var contract_celo_available_color = "#56DF7C";
+var pending_drafts_celo_color = "#9B9B9B";
+var initiate_spent_celo_color = "#B490FF";
+var initiative_available_celo_color = "#7CC0FF";
 
 //FUND and ALLOCATIONS
-var community_fund_celo= { title: "Community Fund", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer, used:0}
+var community_fund_celo= { title: "Community Fund", value: 0, amount:0, color: contract_celo_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer, used:0}
 //var community_fund_eur= { title: "Community Fund cEUR", value: 0, amount:0, color: available_funds_color,label:'',approved:0, address: GOVERNANCE_ADDRESS, proposal: community_fund_explorer}
-var prezenti = { title: "Prezenti", value: 0, amount:0, color: allocated_funds_color,label:'', approved:PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal, used:0   }
-var ocelot = { title: "Ocelot", value: 0, amount:0, color: allocated_funds_color,label:'', approved:OCELOT_APPROVAL, address: OCELOT_ADDRESS, proposal: ocelot_proposal, used:0 }
-var cc = { title: "Climate Collective", value: 0, amount:0, color: allocated_funds_color, label:'', approved:CC_APPROVAL, address: CC_ADDRESS, proposal: cc_proposal, used:0 }
-var community_appreciation_gifts = { title: "Community Appreciation Gifts", value: 0, amount:0, color: allocated_funds_color, label:'', approved: COMMUNITY_APPRECIATION_GIFTS_APPROVAL, address: COMMUNITY_APPRECIATION_GIFTS_ADDRESS, proposal: community_appreciation_gifts_proposal, used:0 }
-var ccf1 = { title: "CCF1", value: 0, amount:0, color: allocated_funds_color, label:'', approved: CCF1_APPROVAL, address: CCF1_ADDRESS, proposal: ccf1_proposal, used:0 }
+var prezenti = { title: "Prezenti", value: 0, amount:0, color: initiative_available_celo_color,label:'', approved:PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal, used:0   }
+var ocelot = { title: "Ocelot", value: 0, amount:0, color: initiative_available_celo_color,label:'', approved:OCELOT_APPROVAL, address: OCELOT_ADDRESS, proposal: ocelot_proposal, used:0 }
+var cc = { title: "Climate Collective", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved:CC_APPROVAL, address: CC_ADDRESS, proposal: cc_proposal, used:0 }
+var community_appreciation_gifts = { title: "Community Appreciation Gifts", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: COMMUNITY_APPRECIATION_GIFTS_APPROVAL, address: COMMUNITY_APPRECIATION_GIFTS_ADDRESS, proposal: community_appreciation_gifts_proposal, used:0 }
+var ccf1 = { title: "CCF1", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: CCF1_APPROVAL, address: CCF1_ADDRESS, proposal: ccf1_proposal, used:0 }
 
 
 //Drafts
-var india_dao_chitty = { title: "India DAO Chitty", value: INDIA_DAO_CHITTY, color: pending_funds_color,label:'', approved:0, proposal: "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0064.md", draft: true }
-var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, color: pending_funds_color,label:'', approved:0, draft: true}
-var africa_dao = { title: "Africa DAO", value: AFRICA_DAO, color: pending_funds_color,label:'', approved:0, draft: true }
-var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_funds_color,label:'', approved:0, draft: true }
-var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + AFRICA_DAO, color: pending_funds_color,label:'', approved:0, draft: true }
+var india_dao_chitty = { title: "India DAO Chitty", value: INDIA_DAO_CHITTY, color: pending_drafts_celo_color,label:'', approved:0, proposal: "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0064.md", draft: true }
+var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, color: pending_drafts_celo_color,label:'', approved:0, draft: true}
+var africa_dao = { title: "Africa DAO", value: AFRICA_DAO, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
+var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
+var drafts = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + AFRICA_DAO, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
 
 
 var fund = [  ocelot, cc, ccf1, community_appreciation_gifts, prezenti, drafts, community_fund_celo ] //community_fund should always be last//, community_fund_eur
@@ -93,9 +96,12 @@ export {CELO_TOKEN,
         community_appreciation_gifts,
         ccf1,
         drafts,
-        available_funds_color,
-        allocated_funds_color,
-        pending_funds_color,
+        contract_celo_color,
+        contract_celo_spent_color,
+        contract_celo_available_color,
+        pending_drafts_celo_color,
+        initiate_spent_celo_color,
+        initiative_available_celo_color,
         getFundData,
         getDraftsData
     }
