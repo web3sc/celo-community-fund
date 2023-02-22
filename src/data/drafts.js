@@ -16,7 +16,7 @@ import { pending_drafts_celo_color  } from "./data";
 
 //2. Spend Approval Amounts
 //Pending Proposals Amounts
-const AFRICA_DAO =  428000; //TBD
+const AFRICA_DAO =  550000; //TBD
 const INDIA_DAO_CHITTY = 270000;
 const INDIA_DAO_MONISH = 80000;
 const LATAM_DAO = 0; //TBD
