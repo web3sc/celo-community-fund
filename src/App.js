@@ -3,7 +3,7 @@ import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
 import './App.css';
-import { PieChart } from "react-minimal-pie-chart";
+import { ResponsiveSunburst } from '@nivo/sunburst'
 import Table from './components/Table';
 import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
@@ -11,15 +11,16 @@ import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
 import {
   GOVERNANCE_ADDRESS,
-  CC_ADDRESS,
-  OCELOT_ADDRESS,
-  COMMUNITY_APPRECIATION_GIFTS_ADDRESS,
   REPL_RATE,
-  available_funds_color,
-  allocated_funds_color,
-  pending_funds_color,
-  getFundData,
-  getDraftsData } from './utils/data';
+  contract_celo_color,
+  contract_celo_spent_color,
+  contract_celo_available_color,
+  pending_drafts_celo_color,
+  initiate_spent_celo_color,
+  initiative_available_celo_color,
+  chartData } from './data/data';
+import { initiatives } from './data/active_initiatives';
+import { drafts } from './data/drafts';
 
 
 
@@ -41,16 +42,13 @@ const customStyles = {
 
 function App() {
   const { kit } = useCelo();
+  const [initativeAvailable, setInitiativeAvailable] = React.useState(0)
   const [table, setTable] = React.useState([])
-  const [data, setData] = React.useState([])
-  //const [communityFund, setCommunityFund] = React.useState(0)
   const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
-  //const [communityFundEur, setCommunityFundEur] = React.useState(0)
-  //const [communityFundEurInCelo, setCommunityFundEurInCelo] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
   
-  let fundData = getFundData();
-  let draftsData = getDraftsData();
+  let fundData = initiatives;
+  let draftsData = drafts;
  
   
   const columns = React.useMemo(
@@ -80,106 +78,74 @@ function App() {
 
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
-    //let euro = await kit.contracts.getContract('StableTokenEUR')
-    //let exchange = await kit.contracts.getExchange()
-    //let euroExchange = await kit.contracts.getContract('ExchangeEUR')
-    let populatedData = [];
     let tableData = [];
+    let initative_available = 0;
+
+
 
     //Community Fund CELO and cEUR
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
     let community_fund_celo_result = getCeloValue(community_fund.c[0])
-    //let community_fund_eur = await euro.balanceOf(GOVERNANCE_ADDRESS)
-    //let community_fund_eur_result = getCeloValue(community_fund_eur.c[0])
-    //setCommunityFundEur(community_fund_eur_result)
     setCommunityFundCelo(community_fund_celo_result)
 
-    //Exchange CELO <> cEUR
-    // let community_fund_eur_celo_quote = await euroExchange.quoteStableSell(community_fund_eur_result)
-    // let community_fund_eur_in_celo = community_fund_eur_celo_quote.c[0]
-    // setCommunityFundEurInCelo(community_fund_eur_in_celo)
-
-    //Community Fund in cUSD
-    //let community_fund_celo_in_cusd = await exchange.quoteGoldSell(community_fund_celo_result ) //+ community_fund_eur_in_celo
-    //setCommunityFund(community_fund_celo_in_cusd);
-
-    //Community Appreciation Gifts
-    let Community_appreciation_gifts = await celo.allowance(GOVERNANCE_ADDRESS, COMMUNITY_APPRECIATION_GIFTS_ADDRESS)
-    let community_appreciation_gifts_result = getCeloValue(Community_appreciation_gifts.c[0])
-
-    //Ocelot
-    let Ocelot = await celo.allowance(GOVERNANCE_ADDRESS, OCELOT_ADDRESS)
-    let ocelot_result = getCeloValue(Ocelot.c[0])
-    
-    //Climate Collective
-    let CC = await celo.allowance(GOVERNANCE_ADDRESS,CC_ADDRESS )
-    let cc_result = getCeloValue(CC.c[0])
 
 
-    //get percentage of funds
-    let drafts = fundData.find((fund) => fund.title === 'Drafts').amount
-    //community fund
-    let community_fund_total_celo = community_fund_celo_result //+ community_fund_eur_in_celo
-    let community_fund_celo_remainding = Math.round(community_fund_celo_result - (community_appreciation_gifts_result + ocelot_result + cc_result + drafts))
-    let community_fund_celo_remaining_percentage = Math.round((community_fund_celo_remainding / community_fund_total_celo) * 100)
-    //let community_fund_eur_in_celo_percentage = Math.round((community_fund_eur_in_celo / community_fund_total_celo) * 100)
-    //initiatives
-    let community_appreciation_gifts_percentage = Math.round((community_appreciation_gifts_result / community_fund_total_celo) * 100)
-    //let prezenti_remaining_percentage = Math.round((prezenti_result / community_fund_total_celo) * 100)
-    let ocelot_remaining_percentage = Math.round((ocelot_result / community_fund_total_celo) * 100)
-    let cc_remaining_percentage = Math.round((cc_result / community_fund_total_celo) * 100)
-    //drafts
-    let drafts_remaining_percentage = Math.round((drafts / community_fund_total_celo) * 100)
-    
-
-    fundData.forEach((fund) => {
-      if(fund.title === 'Community Fund CELO'){
-        fund.approved = community_fund_celo_result.toLocaleString() 
-        fund.amount = community_fund_celo_remainding.toLocaleString()
-        fund.value = community_fund_celo_remaining_percentage
-      } else if(fund.title === 'Community Appreciation Gifts'){
-        fund.amount = community_appreciation_gifts_result
-        fund.value = community_appreciation_gifts_percentage
-      } else if(fund.title === 'Ocelot'){
-        fund.amount = ocelot_result.toLocaleString()
-        fund.value = ocelot_remaining_percentage
-      } else if(fund.title === 'Climate Collective'){
-        fund.amount = cc_result.toLocaleString()
-        fund.value = cc_remaining_percentage
-      } else if(fund.title === 'Drafts'){
-        fund.value = drafts_remaining_percentage
-      } 
-      // else if (fund.title === 'Community Fund cEUR'){
-      //   fund.approved = community_fund_eur_in_celo.toLocaleString()
-      //   fund.amount = community_fund_eur_in_celo.toLocaleString()
-      //   fund.value = community_fund_eur_in_celo_percentage
-      // } 
-
-      if(fund.title !== 'Drafts'){
-        tableData.push({ name: fund.title, approved: fund.approved, available: fund.amount, proposal: fund.proposal })
-        }
-
-      if( fund.amount !== 0){
-        populatedData.push(fund)
+    await Promise.all(fundData.map( async(fund) => {
+      
+      //Update Commmunity Fund CELO Available
+      if(fund.title === 'Community Fund'){
+        fund.amount = community_fund_celo_result
+        fund.available = community_fund_celo_result - initativeAvailable;
+        fund.color = contract_celo_available_color
+      }else if(fund.title !== 'Drafts'){
+        let allowance_available = await celo.allowance(GOVERNANCE_ADDRESS, fund.address)
+        let available = getCeloValue(allowance_available.c[0])
+        fund.available = available
+        fund.used = fund.approved - fund.available
+        fund.color = initiative_available_celo_color
+        initative_available = initative_available + available 
+        setInitiativeAvailable(initative_available)
+      }else if(fund.title === 'Drafts'){
+        fund.available = fund.amount
+        fund.color = pending_drafts_celo_color
+        initative_available = initative_available + fund.available 
       }
+
+    
+
+      //Add available funds to chart
+      if(chartData.children[0].children.find((child) => child.name === fund.title) === undefined){
+        chartData.children[0].children.push((fund.color !== undefined) ? { name: fund.title, color:fund.color, loc: fund.available } :{ name: fund.title, loc: fund.available })
+      }
+
+      //Add utilized funds to chart
+      if(chartData.children[1].children.find((child) => child.name  === fund.title + ' Spent' ) === undefined && fund.title !== 'Drafts' && fund.title !== 'Community Fund'){
+        chartData.children[1].children.push({ name: fund.title + ' Spent', color: initiate_spent_celo_color, loc: fund.used })
+      }
+
+      //Add funds to table
+      if(fund.title !== 'Drafts' && fund.title !== 'Community Fund'){
+        tableData.push({ name: fund.title, approved: fund.approved.toLocaleString(), available: fund.available.toLocaleString(), proposal: fund.proposal })
+      }
+
+    }));
+
+    //Add Drafts to table
+    draftsData.forEach((draft) => {
+      tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: 0, proposal: draft.proposal, draft:true  })
     })
 
-    draftsData.forEach((draft) => {
-      tableData.push({ name: draft.title, approved: draft.value.toLocaleString(), available: draft.amount, proposal: draft.proposal, draft:true  })
-    })
-    
-    setData(populatedData)
+    //Update Community Fund CELO Utilized
+    chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initativeAvailable
+    tableData.unshift({ name: 'Community Fund', approved: community_fund_celo_result.toLocaleString(), available: (community_fund_celo_result - initative_available).toLocaleString(), proposal: fundData[fundData.length - 1].proposal })
+    setInitiativeAvailable(initative_available)
     setTable(tableData)
   } , []);
 
 
 
   useEffect(() => {
-    populateData()
-    let interval = setInterval(() => {
-    populateData()
-  }, 10000);
-  return () => clearInterval(interval);
+    populateData().then(() => {populateData()})
   }, []);
 
 
@@ -242,38 +208,34 @@ function App() {
       <div className="App-header">
       <h3 >Community Fund Status</h3>
       
-      {/* <h4  ><p className='amount-disclaimer'>(Combined total in cUSD)</p>{parseInt(communityFund).toLocaleString() +  ' '} <span><img className='symbol' alt="Celo cUSD Symbol" src={cusd}></img></span><hr/></h4>  */}
-      {/* add below for cEUR -  <span> | </span>{'  ' + communityFundEur.toLocaleString() + ' '}  <span><img className='symbol' alt="Celo cEUR Symbol" src={ceur}></img></span> */}
-      <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4> 
+      <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
       <div className='pie-chart'>
-      <PieChart
-        data={data}
-        segmentsShift={1}
-        label={({ x, y, dx, dy, dataEntry }) => (
-          <text
-              x={x}
-              y={y}
-              dx={dx}
-              dy={dy}
-              dominant-baseline="central"
-              text-anchor="middle"
-              style={{
-                  fill: '#000', pointerEvents: 'none', fontSize: '2px'
-              }}>
-              <tspan x={x} y={y} dx={dx} dy={dy}>{dataEntry.title + ' ' + dataEntry.value + '%'}</tspan>
-
-          </text>
-      )}
-        labelStyle={(index) => ({
-          fontSize: '2px',
-        })}
-        animation
-        animationDuration={500}
-        animationEasing="ease-out"
-        viewBoxSize={[110, 110]}
-        center={[55, 55]}
-      />
+      <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
+        <ResponsiveSunburst
+        data={chartData}
+        margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
+        id="name"
+        value="loc"
+        cornerRadius={2}
+        borderColor={{ theme: 'background' }}
+        colors={ [  contract_celo_color, contract_celo_spent_color ] }
+        childColor={(parent, child) => {
+                return child.data.color
+          }}
+        enableArcLabels={true}
+        arcLabelsSkipAngle={10}
+        arcLabelsTextColor={{
+            from: 'color',
+            modifiers: [
+                [
+                    'darker',
+                    1.4
+                ]
+            ]
+        }}
+    />
+    </div>
       </div>
       </a>
       </div>
@@ -281,16 +243,28 @@ function App() {
         <table>
           <tbody>
             <tr>
-              <td style={{ backgroundColor: allocated_funds_color }} />
-              <td>Intiative Assets Available</td>
+              <td style={{ backgroundColor: contract_celo_color }} />
+              <td>Contract Celo</td>
             </tr>
             <tr>
-              <td style={{ backgroundColor: pending_funds_color }} />
-              <td>Draft Proposals Assets</td>
+              <td style={{ backgroundColor: contract_celo_spent_color }} />
+              <td>Contract Celo Lifetime Spent</td>
             </tr>
             <tr>
-              <td style={{ backgroundColor: available_funds_color }} />
-              <td>Fund Assets Available</td>
+              <td style={{ backgroundColor: contract_celo_available_color }} />
+              <td>Contract Celo Available</td>
+            </tr>
+            <tr>
+              <td style={{ backgroundColor: initiative_available_celo_color }} />
+              <td>Intitative Celo Available</td>
+            </tr>
+            <tr>
+              <td style={{ backgroundColor: pending_drafts_celo_color }} />
+              <td>Draft Proposals Celo</td>
+            </tr>
+            <tr>
+              <td style={{ backgroundColor: initiate_spent_celo_color }} />
+              <td>Intiative Celo Spent</td>
             </tr>
 
           </tbody>
