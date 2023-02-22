@@ -57,7 +57,7 @@ tr{
 }
 
 .symbol {
-  width: 01.5rem;
+  width: 01.3rem;
 }
 
 .info {
@@ -77,12 +77,24 @@ tr{
   cursor: pointer;
 }
 
-.legend {
+.legend-right {
+    text-align: right;
     position: fixed;
+    flex: auto;
     font-size: 1rem;
     bottom: 0;
     right: 0; 
     padding: 3rem;
+}
+
+.legend-left {
+  text-align: left;
+  position: fixed;
+  flex: auto;
+  font-size: 1rem;
+  bottom: 0;
+  left: 0; 
+  padding: 3rem;
 }
 
 .w3text{
@@ -199,14 +211,25 @@ tr{
     width: 0.8rem;
   }
 
-  .legend {
+  .legend-left {
     position: fixed;
     font-size: 0.7rem;
     bottom: 0;
-    right: 0; 
+    left: 0; 
     padding-bottom: 4rem;
-    padding-right: 1rem;
+    padding-left: 1rem;
 }
+
+.legend-right {
+  position: fixed;
+  font-size: 0.7rem;
+  bottom: 0;
+  right: 0; 
+  padding-bottom: 4rem;
+  padding-right: 1rem;
+}
+
+
 .footer{
           font-size: 0.5rem;
 }

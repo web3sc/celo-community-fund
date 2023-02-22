@@ -2,8 +2,10 @@ import React from 'react';
 import { useCallback, useEffect } from 'react'
 import logo from './images/celo_logo.png';
 import symbol from './images/celo_symbol.png';
+import symbol_black from './images/celo_symbol_black.png';
 import './App.css';
 import { ResponsiveSunburst } from '@nivo/sunburst'
+import { useTheme } from '@nivo/core'
 import Table from './components/Table';
 import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
@@ -136,10 +138,11 @@ function App() {
     })
 
     //Update Community Fund CELO Utilized
-    chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initativeAvailable
+    chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initative_available
     tableData.unshift({ name: 'Community Fund', approved: community_fund_celo_result.toLocaleString(), available: (community_fund_celo_result - initative_available).toLocaleString(), proposal: fundData[fundData.length - 1].proposal })
     setInitiativeAvailable(initative_available)
     setTable(tableData)
+    console.log(chartData)
   } , []);
 
 
@@ -160,6 +163,16 @@ function App() {
 
   function closeModal() {
     setIsOpen(false);
+  }
+
+  const CustomTooltip = ({ id, value }) => {
+        const theme = useTheme()
+    
+        return (
+            <strong style={{ ...theme.tooltip.container, }}>
+                {id}: {value.toLocaleString() + ' ' }<span><img className='symbol' alt="Celo Currency Symbol" src={symbol_black}></img></span>
+             </strong>
+    )
   }
   
 
@@ -207,9 +220,10 @@ function App() {
       </div>
       <div className="App-header">
       <h3 >Community Fund Status</h3>
-      
-      <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
+
+      <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
+      </a>
       <div className='pie-chart'>
       <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
         <ResponsiveSunburst
@@ -218,12 +232,14 @@ function App() {
         id="name"
         value="loc"
         cornerRadius={2}
+        tooltip={CustomTooltip}
         borderColor={{ theme: 'background' }}
         colors={ [  contract_celo_color, contract_celo_spent_color ] }
         childColor={(parent, child) => {
                 return child.data.color
           }}
         enableArcLabels={true}
+        arcLabel={(d) => parseFloat(d.formattedValue).toFixed(0) + '%'}
         arcLabelsSkipAngle={10}
         arcLabelsTextColor={{
             from: 'color',
@@ -234,39 +250,44 @@ function App() {
                 ]
             ]
         }}
+        
     />
     </div>
       </div>
-      </a>
       </div>
-      <div className='legend'>
+      <div className='legend-right'>
         <table>
           <tbody>
             <tr>
+            <td>Contract Celo</td>
               <td style={{ backgroundColor: contract_celo_color }} />
-              <td>Contract Celo</td>
             </tr>
+            <tr>
+              <td>Contract Celo Available</td>
+              <td style={{ backgroundColor: contract_celo_available_color }} />
+            </tr>
+            <tr>
+              <td>Intitative Celo Available</td>
+              <td style={{ backgroundColor: initiative_available_celo_color }} />
+            </tr>
+            </tbody>
+        </table>
+        </div>
+        <div className='legend-left'>
+        <table>
+            <tbody>
             <tr>
               <td style={{ backgroundColor: contract_celo_spent_color }} />
               <td>Contract Celo Lifetime Spent</td>
             </tr>
             <tr>
-              <td style={{ backgroundColor: contract_celo_available_color }} />
-              <td>Contract Celo Available</td>
-            </tr>
-            <tr>
-              <td style={{ backgroundColor: initiative_available_celo_color }} />
-              <td>Intitative Celo Available</td>
+              <td style={{ backgroundColor: initiate_spent_celo_color }} />
+              <td>Intiative Celo Spent</td>
             </tr>
             <tr>
               <td style={{ backgroundColor: pending_drafts_celo_color }} />
               <td>Draft Proposals Celo</td>
             </tr>
-            <tr>
-              <td style={{ backgroundColor: initiate_spent_celo_color }} />
-              <td>Intiative Celo Spent</td>
-            </tr>
-
           </tbody>
         </table>
       </div>
