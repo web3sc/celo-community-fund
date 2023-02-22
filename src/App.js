@@ -98,29 +98,29 @@ function App() {
         fund.available = community_fund_celo_result - initativeAvailable;
         fund.color = contract_celo_available_color
       }else if(fund.title !== 'Drafts'){
-      let allowance_available = await celo.allowance(GOVERNANCE_ADDRESS, fund.address)
-      let available = getCeloValue(allowance_available.c[0])
-      fund.available = available
-      fund.used = fund.approved - fund.available
-      fund.color = initiative_available_celo_color
-      initative_available = initative_available + available 
-      setInitiativeAvailable(initative_available)
-    }else if(fund.title === 'Drafts'){
-      fund.available = fund.amount
-      fund.color = pending_drafts_celo_color
-      initative_available = initative_available + fund.available 
-    }
+        let allowance_available = await celo.allowance(GOVERNANCE_ADDRESS, fund.address)
+        let available = getCeloValue(allowance_available.c[0])
+        fund.available = available
+        fund.used = fund.approved - fund.available
+        fund.color = initiative_available_celo_color
+        initative_available = initative_available + available 
+        setInitiativeAvailable(initative_available)
+      }else if(fund.title === 'Drafts'){
+        fund.available = fund.amount
+        fund.color = pending_drafts_celo_color
+        initative_available = initative_available + fund.available 
+      }
 
     
 
-    //Add available funds to chart
-    if(chartData.children[0].children.find((child) => child.name === fund.title) === undefined){
-      chartData.children[0].children.push((fund.color !== undefined) ? { name: fund.title, color:fund.color, loc: fund.available } :{ name: fund.title, loc: fund.available })
+      //Add available funds to chart
+      if(chartData.children[0].children.find((child) => child.name === fund.title) === undefined){
+        chartData.children[0].children.push((fund.color !== undefined) ? { name: fund.title, color:fund.color, loc: fund.available } :{ name: fund.title, loc: fund.available })
       }
 
       //Add utilized funds to chart
       if(chartData.children[1].children.find((child) => child.name  === fund.title + ' Spent' ) === undefined && fund.title !== 'Drafts' && fund.title !== 'Community Fund'){
-      chartData.children[1].children.push({ name: fund.title + ' Spent', color: initiate_spent_celo_color, loc: fund.used })
+        chartData.children[1].children.push({ name: fund.title + ' Spent', color: initiate_spent_celo_color, loc: fund.used })
       }
 
       //Add funds to table
@@ -138,7 +138,7 @@ function App() {
     //Update Community Fund CELO Utilized
     chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initativeAvailable
     tableData.unshift({ name: 'Community Fund', approved: community_fund_celo_result.toLocaleString(), available: (community_fund_celo_result - initative_available).toLocaleString(), proposal: fundData[fundData.length - 1].proposal })
-
+    setInitiativeAvailable(initative_available)
     setTable(tableData)
   } , []);
 
@@ -206,9 +206,9 @@ function App() {
         <button className='info' onClick={openModal}><InfoIcon  /></button>
       </div>
       <div className="App-header">
-      <h3 >Community Fund Status {initativeAvailable}</h3>
+      <h3 >Community Fund Status</h3>
       
-      <h4  >{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span></h4> 
+      <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
       <div className='pie-chart'>
       <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
