@@ -60,6 +60,10 @@ tr{
   width: 01.3rem;
 }
 
+.symbol-hover {
+  width: 0.7rem;
+}
+
 .info {
   position: absolute;
   top: 0;
@@ -137,6 +141,20 @@ tr{
 
 .pie-chart {
   width: 65vw;
+}
+
+.chart-button {
+  background-color: #282c34;
+  color: white;
+  border: none;
+  padding: 1rem;
+  font-size: 1rem;
+  margin: 1rem;
+  border-radius: 5px;
+}
+
+.chart-button:hover {
+  cursor: pointer;
 }
 
 .tooltip {

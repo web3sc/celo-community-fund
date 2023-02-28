@@ -38,19 +38,19 @@ const customStyles = {
 };
 
 
-
-
-
-
 function App() {
   const { kit } = useCelo();
   const [initativeAvailable, setInitiativeAvailable] = React.useState(0)
+  const [currentData, setCurrentData] = React.useState(JSON.parse(JSON.stringify(chartData)));
   const [table, setTable] = React.useState([])
   const [communityFundCelo, setCommunityFundCelo] = React.useState(0)
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [chartType, setChartType] = React.useState('Lifetime')
+  const [chart, setChart] = React.useState(chartData)
   
   let fundData = initiatives;
   let draftsData = drafts;
+
  
   
   const columns = React.useMemo(
@@ -78,19 +78,19 @@ function App() {
   )
 
 
+
+
+
+
   const populateData = useCallback(async () => {
     let celo = await kit.contracts.getGoldToken()
     let tableData = [];
     let initative_available = 0;
 
-
-
     //Community Fund CELO and cEUR
     let community_fund = await celo.balanceOf(GOVERNANCE_ADDRESS)
     let community_fund_celo_result = getCeloValue(community_fund.c[0])
     setCommunityFundCelo(community_fund_celo_result)
-
-
 
     await Promise.all(fundData.map( async(fund) => {
       
@@ -113,11 +113,10 @@ function App() {
         initative_available = initative_available + fund.available 
       }
 
-    
-
       //Add available funds to chart
       if(chartData.children[0].children.find((child) => child.name === fund.title) === undefined){
         chartData.children[0].children.push((fund.color !== undefined) ? { name: fund.title, color:fund.color, loc: fund.available } :{ name: fund.title, loc: fund.available })
+        currentData.children[0].children.push((fund.color !== undefined) ? { name: fund.title, color:fund.color, loc: fund.available } :{ name: fund.title, loc: fund.available })
       }
 
       //Add utilized funds to chart
@@ -141,11 +140,10 @@ function App() {
     chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initative_available
     tableData.unshift({ name: 'Community Fund', approved: community_fund_celo_result.toLocaleString(), available: (community_fund_celo_result - initative_available).toLocaleString(), proposal: fundData[fundData.length - 1].proposal })
     setInitiativeAvailable(initative_available)
+    setChart(chartData)
     setTable(tableData)
     console.log(chartData)
   } , []);
-
-
 
   useEffect(() => {
     populateData().then(() => {populateData()})
@@ -165,15 +163,45 @@ function App() {
     setIsOpen(false);
   }
 
+  function changeChartType(){
+    if(chartType === 'Lifetime'){
+      setChart(currentData)
+      setChartType('Current')
+    }else{
+      setChart(chartData)
+      setChartType('Lifetime')
+    }
+  }
+
   const CustomTooltip = ({ id, value }) => {
         const theme = useTheme()
     
         return (
             <strong style={{ ...theme.tooltip.container, }}>
-                {id}: {value.toLocaleString() + ' ' }<span><img className='symbol' alt="Celo Currency Symbol" src={symbol_black}></img></span>
+                {id}: {value.toLocaleString() + ' ' }<span><img className='symbol-hover' alt="Celo Currency Symbol" src={symbol_black}></img></span>
              </strong>
     )
   }
+
+  const CenteredMetric = ({ nodes, centerX, centerY}) => {
+    
+    return (
+        <text
+            x={centerX}
+            y={centerY - 10}
+            textAnchor="middle" 
+            dominantBaseline="central"
+            style={{ fill: '#fff' }}
+        >
+            {chartType}
+            <tspan x={centerX} y={centerY + 10} textAnchor="middle" dominantBaseline="central" style={{ fill: '#fff' }}>
+              Status
+            </tspan>   
+        </text>
+    )
+}
+
+
   
 
   return (
@@ -224,10 +252,12 @@ function App() {
 
       <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       </a>
+      <button className='chart-button' onClick={changeChartType}>
       <div className='pie-chart'>
       <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
         <ResponsiveSunburst
-        data={chartData}
+        layers={['arcs', 'arcLabels', CenteredMetric]}
+        data={chart}
         margin={{ top: 10, right: 10, bottom: 10, left: 10 }}
         id="name"
         value="loc"
@@ -254,6 +284,7 @@ function App() {
     />
     </div>
       </div>
+      </button>
       </div>
       <div className='legend-right'>
         <table>
