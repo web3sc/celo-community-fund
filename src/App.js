@@ -11,6 +11,7 @@ import Modal from 'react-modal';
 import { useCelo } from '@celo/react-celo';
 import InfoIcon from '@mui/icons-material/Info';
 import CloseIcon from '@mui/icons-material/Close';
+import { GitHub } from '@mui/icons-material';
 import {
   GOVERNANCE_ADDRESS,
   REPL_RATE,
@@ -244,6 +245,7 @@ function App() {
 
       <div >
         <img className='celo-logo' src={logo} alt="Celo" />
+        <button className='github' href="https://github.com/web3sc/celo-community-fund"><GitHub  /></button>
         <button className='info' onClick={openModal}><InfoIcon  /></button>
       </div>
       <div className="App-header">
