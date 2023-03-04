@@ -245,15 +245,17 @@ function App() {
 
       <div >
         <img className='celo-logo' src={logo} alt="Celo" />
-        <button className='github' href="https://github.com/web3sc/celo-community-fund"><GitHub  /></button>
+        <a className='github' href="https://github.com/web3sc/celo-community-fund"><GitHub  /></a>
         <button className='info' onClick={openModal}><InfoIcon  /></button>
       </div>
       <div className="App-header">
+        <div className='header'>
       <h3 >Community Fund Status</h3>
       <a href='https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972' target='_blank' className='tooltip'><span class="tooltiptext">View Governance Contract</span>
 
       <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       </a>
+      </div>
       <button className='chart-button' onClick={changeChartType}>
       <div className='pie-chart'>
       <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
