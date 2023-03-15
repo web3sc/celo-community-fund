@@ -139,11 +139,11 @@ function App() {
 
     //Update Community Fund CELO Utilized
     chartData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initative_available
+    currentData.children[0].children.find((child) => child.name === 'Community Fund').loc = community_fund_celo_result - initative_available
     tableData.unshift({ name: 'Community Fund', approved: community_fund_celo_result.toLocaleString(), available: (community_fund_celo_result - initative_available).toLocaleString(), proposal: fundData[fundData.length - 1].proposal })
     setInitiativeAvailable(initative_available)
     setChart(chartData)
     setTable(tableData)
-    console.log(chartData)
   } , []);
 
   useEffect(() => {
