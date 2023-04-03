@@ -76,11 +76,11 @@ Community Fund: 10004964
 Prezenti: 0
 Ocelot: 1239250
 CC: 2518998
+Africa DAO: 550000
 --------------------
 -------Drafts-------
 India DAO Chitty: 270000
 India DAO Monish: 80000
-Africa DAO: 550000
 Latam DAO: 903000
 ```
 
@@ -90,6 +90,4 @@ This is a community run project, all contributions are welcome. If you have feed
 
 ## Pay it Forward
 
-If you find this useful please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group 
-
-
+If you find this useful please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group.
