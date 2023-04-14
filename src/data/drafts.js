@@ -19,7 +19,6 @@ const INDIA_DAO_CHITTY = 270000;
 const INDIA_DAO_MONISH = 80000;
 const LATAM_DAO = 903000; //605K at Celo average rice of 90 days
 const IMMUNEFI_BUG_BOUNTY = 1500000; //1.5m Celo ~$1m at 90d trailing
-const PREZENTI_SECOND_ROUND = 1600000; //TBD
 
 
 //3. Add Proposal link
@@ -31,14 +30,12 @@ var india_dao_chitty = { title: "India DAO Chitty", value: INDIA_DAO_CHITTY, col
 var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, color: pending_drafts_celo_color,label:'', approved:0, draft: true}
 var latam_dao = { title: "Latam DAO", value: LATAM_DAO, color: pending_drafts_celo_color,label:'', approved:0, draft: true, proposal: latam_dao_proposal }
 var immunefi_bug_bounty = { title: "ImmuneFi Bug Bounty", value: IMMUNEFI_BUG_BOUNTY, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
-var prezenti_second_round = { title: "Prezenti Replenish", value: PREZENTI_SECOND_ROUND, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
-
 
 //5. Add Initiative to drafts object
-var drafts_object = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + LATAM_DAO +IMMUNEFI_BUG_BOUNTY + PREZENTI_SECOND_ROUND, color: pending_drafts_celo_color,label:'', approved:0, draft: true }
+var drafts_object = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + LATAM_DAO +IMMUNEFI_BUG_BOUNTY, color: pending_drafts_celo_color,label:'', approved:0, draft: true, type: "Drafts" }
 
 
 //6. Add Initiative to drafts array
-var drafts = [  india_dao_chitty, india_dao_monish, latam_dao, immunefi_bug_bounty, prezenti_second_round  ]
+var drafts = [  india_dao_chitty, india_dao_monish, latam_dao, immunefi_bug_bounty  ]
 
 export {drafts, drafts_object}
