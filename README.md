@@ -26,6 +26,7 @@ The Community Fund receives assets from three sources:
 | 3 | Ocelot | 2021-12 | 3,000,000 | [site](http://ocelot.xyz/) | Ongoing |
 | 4 | Climate Collective | 2022-06-11 | 4,000,000 | [site](https://climatecollective.org/) | Ongoing |
 | 5 | Prezenti | 2022-06-11 | 800,000 | [site](https://prezenti.xyz) | Ongoing |
+| 3 | Africa DAO |  550,000 | [forum post](https://forum.celo.org/t/celo-africa-regional-dao-proposal/4054) | Ongoing |
 
 ## Drafts
 
@@ -33,8 +34,7 @@ The Community Fund receives assets from three sources:
 |:---:|:---------------:|:-----:|:------:|:------:|
 | 1 | India DAO Chitty | 270,000 | [forum post](https://forum.celo.org/t/celo-indiadao-regional-dao-proposal/4207) | Forum |
 | 2 | India DAO Monish | 80,000 | [forum post]() | Forum |
-| 3 | Africa DAO |  TBD | [forum post](https://forum.celo.org/t/celo-africa-regional-dao-proposal/4054) | Forum |
-| 4 | LATAM DAO  | TBD | [forum post]() | Forum |
+| 3 | LATAM DAO  | 903,000 | [forum post](https://forum.celo.org/t/latam-w3-dao-proposal/4494) | Forum |
 
 
 ## Adding an Intiative
@@ -76,12 +76,12 @@ Community Fund: 10004964
 Prezenti: 0
 Ocelot: 1239250
 CC: 2518998
+Africa DAO: 550000
 --------------------
 -------Drafts-------
 India DAO Chitty: 270000
 India DAO Monish: 80000
-Africa DAO: 0
-Latam DAO: 0
+Latam DAO: 903000
 ```
 
 ## Contributing
@@ -90,6 +90,4 @@ This is a community run project, all contributions are welcome. If you have feed
 
 ## Pay it Forward
 
-If you find this useful please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group 
-
-
+If you find this useful please support and vote for [TPT](https://www.thecelo.com/groupDetail/thepassivetrust)(The Passive Trust) Celo validator group.
