@@ -163,13 +163,11 @@ tr{
   width: 65vw;
 }
 
-.chart-button {
+.chart-text {
   background-color: #282c34;
   color: white;
   border: none;
-  padding: 1rem;
   font-size: 1rem;
-  margin: 1rem;
   border-radius: 5px;
 }
 

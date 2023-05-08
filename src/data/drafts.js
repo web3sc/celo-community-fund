@@ -31,7 +31,7 @@ var india_dao_monish = { title: "India DAO Monish", value: INDIA_DAO_MONISH, col
 var immunefi_bug_bounty = { title: "ImmuneFi Bug Bounty", value: IMMUNEFI_BUG_BOUNTY, color: pending_drafts_celo_color,label:'', approved:0, draft: true, proposal: immunefi_bug_bounty_proposal }
 
 //5. Add Initiative to drafts object
-var drafts_object = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + LATAM_DAO +IMMUNEFI_BUG_BOUNTY, color: pending_drafts_celo_color,label:'', approved:0, draft: true, type: "Drafts" }
+var drafts_object = { title: "Drafts", value: 1, amount: INDIA_DAO_CHITTY + INDIA_DAO_MONISH + IMMUNEFI_BUG_BOUNTY, color: pending_drafts_celo_color,label:'', approved:0, draft: true, type: "Drafts" }
 
 
 //6. Add Initiative to drafts array

@@ -24,6 +24,8 @@ import {
   chartData } from './data/data';
 import { initiatives } from './data/active_initiatives';
 import { drafts } from './data/drafts';
+import MultiSwitch from 'react-multi-switch-toggle'
+
 
 
 
@@ -247,6 +249,7 @@ function App() {
         <img className='celo-logo' src={logo} alt="Celo" />
         <a className='github' href="https://github.com/web3sc/celo-community-fund"><GitHub  /></a>
         <button className='info' onClick={openModal}><InfoIcon  /></button>
+
       </div>
       <div className="App-header">
         <div className='header'>
@@ -256,9 +259,26 @@ function App() {
       <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       </a>
       </div>
-      <button className='chart-button' onClick={changeChartType}>
+
+      <MultiSwitch
+            texts={[
+              'Lifetime',
+              'Current'
+            ]}
+            selectedSwitch={0}
+            bgColor={'white'}
+            onToggleCallback={changeChartType}
+            selectedSwitchColor={"#FCFF52"}
+            fontColor={'black'}
+            selectedFontColor={'#1e311b'}
+            eachSwitchWidth={110}
+            height={'30px'}
+            fontSize={'16px'}
+        >
+        </MultiSwitch>
+
       <div className='pie-chart'>
-      <div style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
+      <div className='chart-text' style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
         <ResponsiveSunburst
         layers={['arcs', 'arcLabels', CenteredMetric]}
         data={chart}
@@ -288,7 +308,7 @@ function App() {
     />
     </div>
       </div>
-      </button>
+
       </div>
       <div className='legend-right'>
         <table>
