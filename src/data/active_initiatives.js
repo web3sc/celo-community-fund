@@ -19,6 +19,7 @@ const CCF1_ADDRESS = "0x2f90Bb1CAF4079192481B1A7F3088220d291456D";
 const AFRICA_DAO_ADDRESS =  "0xc59533fd060e38230100F3577eF5ad9467ae2594"; //take this info from the github mainnet.json
 const PREZENTI_ADDRESS = "0xda2069f47D252121c2288301D6EF50B87220A693";
 const CHAINLINK_ADDRESS = "0x46421b8EF42b67Ae4E24BE599bD78144e5e12088"
+const LATAM_DAO_ADDRESS = "0x38DBAB5C651F352C8f5F765fDA292E9B92d850Ff"
 
 
 //2. Spend Approval Amounts
@@ -29,7 +30,8 @@ const CCF1_APPROVAL = 665387;
 const AFRICA_DAO_APPROVAL = 550000
 const PREZENTI_SECOND_ROUND = 1600000; 
 const PREZENTI_APPROVAL = 800000;
-const CHAINLINK_APPROVAL = 5980313
+const CHAINLINK_APPROVAL = 5980313;
+const LATAM_DAO_APPROVAL = 903000; //605K at Celo average rice of 90 days
 
 
 //3. Add Proposal link
@@ -40,6 +42,7 @@ const ccf1_proposal = "https://celo.stake.id/#/proposal/18"
 const africa_dao_proposal = "https://celo.stake.id/#/proposal/85"
 const prezenti_proposal = "https://celo.stake.id/#/proposal/89"
 const chainlink_proposal = "https://celo.stake.id/#/proposal/88"
+const latam_dao_proposal = "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0076.md"
 
 
 //4. Add Initiative to fund array
@@ -50,8 +53,9 @@ var ccf1 = { title: "CCF1", value: 0, amount:0, color: initiative_available_celo
 var africa_dao = { title: "Africa DAO", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: AFRICA_DAO_APPROVAL, address: AFRICA_DAO_ADDRESS, proposal: africa_dao_proposal, used:0 }
 var prezenti_second_round = { title: "Prezenti", value: 0, color: initiative_available_celo_color,label:'', approved: PREZENTI_SECOND_ROUND + PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal, used:0 }
 var chainlink = { title: "Chainlink", value: 0, color: initiative_available_celo_color,label:'', approved: CHAINLINK_APPROVAL, address: CHAINLINK_ADDRESS, proposal: chainlink_proposal, used:0 }
+var latam_dao = { title: "Latam DAO", value: 0, color: pending_drafts_celo_color,label:'', approved: LATAM_DAO_APPROVAL, address: LATAM_DAO_ADDRESS, proposal: latam_dao_proposal }
 
 //5. Add Initiative to fundData array
-var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink  ].concat(community_fund).concat(completed_initiatives)
+var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao  ].concat(community_fund).concat(completed_initiatives)
 
 export {initiatives}
