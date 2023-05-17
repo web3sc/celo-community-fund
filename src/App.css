@@ -19,6 +19,7 @@ h4 {
   width: 75vw;
   font-family: 'Inter', sans-serif;
   text-align: justify;
+  z-index: 12;
 
 }
 
@@ -196,6 +197,10 @@ tr{
   /* Position the tooltip */
   position: absolute;
   z-index: 1;
+}
+
+.toggle {
+  z-index: 0;
 }
 
 .tooltip:hover .tooltiptext {

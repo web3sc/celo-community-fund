@@ -259,7 +259,7 @@ function App() {
       <h4  ><p className='amount-disclaimer'>Contract Balance   |   Funds Available</p>{communityFundCelo.toLocaleString() +  '  '}<span><img className='symbol' alt="Celo Currency Symbol" src={symbol}></img></span><span> | </span>{'  ' + (communityFundCelo - initativeAvailable).toLocaleString() + ' '}  <span><img className='symbol' alt="Celo Symbol" src={symbol}></img></span></h4> 
       </a>
       </div>
-
+    <div className='toggle'>
       <MultiSwitch
             texts={[
               'Lifetime',
@@ -276,7 +276,7 @@ function App() {
             fontSize={'16px'}
         >
         </MultiSwitch>
-
+        </div>
       <div className='pie-chart'>
       <div className='chart-text' style={{ height: '50vh',width: '100%', color: 'black', textAlign:'center' }}>
         <ResponsiveSunburst
