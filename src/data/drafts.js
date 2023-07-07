@@ -19,7 +19,6 @@ const INDIA_DAO_CHITTY = 270000;
 const INDIA_DAO_MONISH = 80000;
 const IMMUNEFI_BUG_BOUNTY = 1500000; //1.5m Celo ~$1m at 90d trailing
 
-
 //3. Add Proposal link
 const india_dao_chitty_proposal = "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0064.md"
 const immunefi_bug_bounty_proposal = "https://github.com/celo-org/governance/blob/main/CGPs/cgp-0073.md"

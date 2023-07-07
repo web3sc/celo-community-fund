@@ -60,6 +60,6 @@ var latam_dao = { title: "Latam DAO", value: 0, color: initiative_available_celo
 var celo_tribe = { title: "Celo Tribe", value: 0, color: initiative_available_celo_color,label:'', approved: CELO_TRIBE_APPROVAL, address: CELO_TRIBE_ADDRESS, proposal: celo_tribe_proposal }
 
 //5. Add Initiative to fundData array
-var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe  ].concat(community_fund).concat(completed_initiatives)
+var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe, drafts_object  ].concat(community_fund).concat(completed_initiatives)
 
 export {initiatives}
