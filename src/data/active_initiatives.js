@@ -23,6 +23,7 @@ const LATAM_DAO_ADDRESS = "0x38DBAB5C651F352C8f5F765fDA292E9B92d850Ff"
 const CELO_TRIBE_ADDRESS = "0x81bC5B8F34CF959105c793F776971FA8A7BB2a25"
 const KOREA_DAO_ADDRESS = "0xF737369f79291d8e4aB273bBE5A4669381Cb4715"
 const EUROPE_DAO_ADDRESS = "0x4763a32d5256EDA615fd5c07b0e333C7Baa4D628"
+const MOBILE_FIRST_COMMUNITY_ADDRESS = "0xA7AF94d898fc31A43D163201cE44b4Fa944a79EE"
 
 
 //2. Spend Approval Amounts
@@ -38,6 +39,7 @@ const LATAM_DAO_APPROVAL = 903000; //605K at Celo average rice of 90 days
 const CELO_TRIBE_APPROVAL = 70000;
 const KOREA_DAO_APPROVAL = 333030;
 const EUROPE_DAO_APPROVAL = 440000;
+const MOBILE_FIRST_COMMUNITY_APPROVAL = 120000;
 
 
 //3. Add Proposal link
@@ -52,6 +54,7 @@ const latam_dao_proposal = "https://celo.stake.id/#/proposal/96"
 const celo_tribe_proposal = "https://celo.stake.id/#/proposal/101"
 const korea_dao_proposal = "https://celo.stake.id/#/proposal/120"
 const europe_dao_proposal = "https://celo.stake.id/#/proposal/115"
+const mobile_first_community_proposal = "https://celo.stake.id/#/proposal/123"
 
 
 
@@ -66,10 +69,11 @@ var prezenti_second_round = { title: "Prezenti", value: 0, color: initiative_ava
 var chainlink = { title: "Chainlink", value: 0, color: initiative_available_celo_color, label:'', approved: CHAINLINK_APPROVAL, address: CHAINLINK_ADDRESS, proposal: chainlink_proposal, used:0 }
 var latam_dao = { title: "Latam DAO", value: 0, color: initiative_available_celo_color, label:'', approved: LATAM_DAO_APPROVAL, address: LATAM_DAO_ADDRESS, proposal: latam_dao_proposal }
 var celo_tribe = { title: "Celo Tribe", value: 0, color: initiative_available_celo_color, label:'', approved: CELO_TRIBE_APPROVAL, address: CELO_TRIBE_ADDRESS, proposal: celo_tribe_proposal }
-var korea_dao = { title: "Asia DAO", value: 0, color: initiative_available_celo_color, label:'', approved: KOREA_DAO_APPROVAL, address: KOREA_DAO_ADDRESS, proposal: korea_dao_proposal, draft: true}
-var europe_dao = { title: "Europe DAO", value: 0, color: initiative_available_celo_color, label:'', approved:EUROPE_DAO_APPROVAL, address: EUROPE_DAO_ADDRESS, proposal: europe_dao_proposal, draft: true}
+var korea_dao = { title: "Asia DAO", value: 0, color: initiative_available_celo_color, label:'', approved: KOREA_DAO_APPROVAL, address: KOREA_DAO_ADDRESS, proposal: korea_dao_proposal}
+var europe_dao = { title: "Europe DAO", value: 0, color: initiative_available_celo_color, label:'', approved:EUROPE_DAO_APPROVAL, address: EUROPE_DAO_ADDRESS, proposal: europe_dao_proposal}
+var mobile_first_community = { title: "Mobile First Community", value: 0, color: initiative_available_celo_color, label:'', approved:MOBILE_FIRST_COMMUNITY_APPROVAL, address: MOBILE_FIRST_COMMUNITY_ADDRESS, proposal: mobile_first_community_proposal}
 
 //5. Add Initiative to fundData array
-var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe, korea_dao, europe_dao, drafts_object  ].concat(community_fund).concat(completed_initiatives)
+var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe, korea_dao, europe_dao, mobile_first_community, drafts_object  ].concat(community_fund).concat(completed_initiatives)
 
 export {initiatives}
