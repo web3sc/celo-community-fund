@@ -21,6 +21,7 @@ const PREZENTI_ADDRESS = "0xda2069f47D252121c2288301D6EF50B87220A693";
 const CHAINLINK_ADDRESS = "0x46421b8EF42b67Ae4E24BE599bD78144e5e12088"
 const LATAM_DAO_ADDRESS = "0x38DBAB5C651F352C8f5F765fDA292E9B92d850Ff"
 const CELO_TRIBE_ADDRESS = "0x81bC5B8F34CF959105c793F776971FA8A7BB2a25"
+const KOREA_DAO_ADDRESS = "0xF737369f79291d8e4aB273bBE5A4669381Cb4715"
 
 
 //2. Spend Approval Amounts
@@ -33,7 +34,8 @@ const PREZENTI_SECOND_ROUND = 1600000;
 const PREZENTI_APPROVAL = 800000;
 const CHAINLINK_APPROVAL = 5980313;
 const LATAM_DAO_APPROVAL = 903000; //605K at Celo average rice of 90 days
-const CELO_TRIBE_APPROVAL = 70000
+const CELO_TRIBE_APPROVAL = 70000;
+const KOREA_DAO_APPROVAL = 333030;
 
 
 //3. Add Proposal link
@@ -46,6 +48,8 @@ const prezenti_proposal = "https://celo.stake.id/#/proposal/89"
 const chainlink_proposal = "https://celo.stake.id/#/proposal/88"
 const latam_dao_proposal = "https://celo.stake.id/#/proposal/96"
 const celo_tribe_proposal = "https://celo.stake.id/#/proposal/101"
+const korea_dao_proposal = "https://celo.stake.id/#/proposal/120"
+
 
 
 //4. Add Initiative to fund array
@@ -54,12 +58,13 @@ var ocelot = { title: "Ocelot", value: 0, amount:0, color: initiative_available_
 var community_appreciation_gifts = { title: "Community Appreciation Gifts", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: COMMUNITY_APPRECIATION_GIFTS_APPROVAL, address: COMMUNITY_APPRECIATION_GIFTS_ADDRESS, proposal: community_appreciation_gifts_proposal, used:0 }
 var ccf1 = { title: "CCF1", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: CCF1_APPROVAL, address: CCF1_ADDRESS, proposal: ccf1_proposal, used:0 }
 var africa_dao = { title: "Africa DAO", value: 0, amount:0, color: initiative_available_celo_color, label:'', approved: AFRICA_DAO_APPROVAL, address: AFRICA_DAO_ADDRESS, proposal: africa_dao_proposal, used:0 }
-var prezenti_second_round = { title: "Prezenti", value: 0, color: initiative_available_celo_color,label:'', approved: PREZENTI_SECOND_ROUND + PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal, used:0 }
-var chainlink = { title: "Chainlink", value: 0, color: initiative_available_celo_color,label:'', approved: CHAINLINK_APPROVAL, address: CHAINLINK_ADDRESS, proposal: chainlink_proposal, used:0 }
-var latam_dao = { title: "Latam DAO", value: 0, color: initiative_available_celo_color,label:'', approved: LATAM_DAO_APPROVAL, address: LATAM_DAO_ADDRESS, proposal: latam_dao_proposal }
-var celo_tribe = { title: "Celo Tribe", value: 0, color: initiative_available_celo_color,label:'', approved: CELO_TRIBE_APPROVAL, address: CELO_TRIBE_ADDRESS, proposal: celo_tribe_proposal }
+var prezenti_second_round = { title: "Prezenti", value: 0, color: initiative_available_celo_color, label:'', approved: PREZENTI_SECOND_ROUND + PREZENTI_APPROVAL, address: PREZENTI_ADDRESS, proposal: prezenti_proposal, used:0 }
+var chainlink = { title: "Chainlink", value: 0, color: initiative_available_celo_color, label:'', approved: CHAINLINK_APPROVAL, address: CHAINLINK_ADDRESS, proposal: chainlink_proposal, used:0 }
+var latam_dao = { title: "Latam DAO", value: 0, color: initiative_available_celo_color, label:'', approved: LATAM_DAO_APPROVAL, address: LATAM_DAO_ADDRESS, proposal: latam_dao_proposal }
+var celo_tribe = { title: "Celo Tribe", value: 0, color: initiative_available_celo_color, label:'', approved: CELO_TRIBE_APPROVAL, address: CELO_TRIBE_ADDRESS, proposal: celo_tribe_proposal }
+var korea_dao = { title: "Asia DAO", value: 0, color: initiative_available_celo_color, label:'', approved: KOREA_DAO_APPROVAL, address: KOREA_DAO_ADDRESS, proposal: korea_dao_proposal, draft: true}
 
 //5. Add Initiative to fundData array
-var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe, drafts_object  ].concat(community_fund).concat(completed_initiatives)
+var initiatives = [  ocelot, cc, community_appreciation_gifts, ccf1, africa_dao, prezenti_second_round, chainlink, latam_dao, celo_tribe, korea_dao, drafts_object  ].concat(community_fund).concat(completed_initiatives)
 
 export {initiatives}
