@@ -4,6 +4,9 @@ const CELO_TOKEN = "0x471EcE3750Da237f93B8E339c536989b8978a438";
 const CEUR_TOKEN = "0xd8763cba276a3738e6de85b4b3bf5fded6d6ca73"
 const GOVERNANCE_ADDRESS = "0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972";
 
+//Node address
+const node = "https://forno.celo.org"
+
 //Explorer Links
 const community_fund_explorer = "https://explorer.celo.org/mainnet/address/0xD533Ca259b330c7A88f74E000a3FaEa2d63B7972/coin-balances#address-tabs"
 

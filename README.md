@@ -62,27 +62,8 @@ Clicking the info button at the top right gives a more detailed overview of each
 - The estimated replish rate per day of the fund
 - Each of the initiatives including total amount approved, available amount left and a link to the respective governance proposal.
 
-## App
+## Automation
 
-In the `src/utils` folder it contains a node app that prints the current details.
-
-`node src/utils/execute.js` 
-
-returns
-
-```
--------Community Fund-------
-Community Fund: 10004964
-Prezenti: 0
-Ocelot: 1239250
-CC: 2518998
-Africa DAO: 550000
---------------------
--------Drafts-------
-India DAO Chitty: 270000
-India DAO Monish: 80000
-Latam DAO: 903000
-```
 
 ## Contributing
 
